@@ -14,6 +14,8 @@ var canvas = document.querySelector('#canvas'),
     currentStroke = null;
 
 var currentColor = document.querySelector('#color-picker');
+var BrushSize = document.querySelector('#brush-size');
+var BrushSizeLabel = document.querySelector('#current-brush-size');
 
 window.addEventListener('load', () => {
 
@@ -41,15 +43,22 @@ window.addEventListener('load', () => {
         c.moveTo(e.clientX, e.clientY);
     }
 
-    // Event listeners
+    // Canvas mouse event listeners
     canvas.addEventListener('mousedown', startPosition);
     canvas.addEventListener('mouseup', finishedPosition);
     canvas.addEventListener('mousemove', draw);
 });
 
-// Change color of the brush
+// Event Listeners
 currentColor.addEventListener('input', ChangeColor);
+BrushSize.addEventListener('input', ChangeBrushSize);
 
+// Change color of the brush
 function ChangeColor() {
     brush.color = currentColor.value;
+}
+// Change width of brush
+function ChangeBrushSize() {
+    brush.size = BrushSize.value;
+    BrushSizeLabel.innerHTML = brush.size;
 }
