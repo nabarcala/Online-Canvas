@@ -51,16 +51,8 @@
 .toolbar .selected {
     background-color: var(--color-hover);
 }
-.toolbar .disabled {
-    background-color: var(--color-disabled);
-    border: 3px solid var(--color-disabled);
-}
-.toolbar .disabled i, .toolbar .disabled p {
-    color: rgb(54, 54, 54);
-}
-.toolbar .disabled:hover {
-    background-color: var(--color-disabled);
-    border: 3px solid var(--color-disabled);
+.toolbar .disabled { 
+    display: none;
 }
 
 /* ////////// Color Picker ////////// */
