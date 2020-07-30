@@ -14,28 +14,60 @@
 
 /* ////////// Nav ////////// */
 
+
 .toolbar {
     width: 100%;
-    background-color: #3af;
+    background-color: #27272d;
     display: flex;
     flex-direction: row;
-    /* border-bottom: 1px solid #4e5664;  */
+    border-bottom: 1px solid #4e5664; 
     position: absolute; 
 }
 .toolbar * {
     margin: 5px 10px;
 }
-.toolbar button { 
-    /* border-right: 1px solid #4e5664; */
-    /* padding-right: 15px; */
-    padding: 5px;
-    /* border: 1px solid white; */
-    /* background-color: white; */
-    /* border-radius: 10%; */
+.toolbar a {
+    border: 3px solid #37373f;
+    border-radius: 10%;
+    text-decoration: none;
+}
+.toolbar a .btn {
+    /* display: inline-block; */
+    margin-top: 15px;
+    font-size: 1rem;
+    text-align: center;
+    color: #98989b; 
 }
 .toolbar a:hover {
-    /* background-color: rgb(70, 117, 119); */
+    background-color: #37373f;
 }
+.toolbar a i {
+    color: #98989b; 
+    padding: 5px;
+    font-size: 1.4rem;
+    /* align-self: center; */
+}
+
+/* ////////// Color Picker ////////// */
+
+.toolbar .color-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    border: 3px solid #37373f;
+    border-radius: 2%;
+    color: #98989b; 
+}
+.toolbar .color-wrapper:hover {
+    background-color: #37373f;
+}   
+.toolbar .color-wrapper #current-brush-size {
+    align-self: center;
+} 
+
+/* ////////// Brush Size Slider ////////// */
+
+
 
 /* ////////// Canvas ////////// */
 
