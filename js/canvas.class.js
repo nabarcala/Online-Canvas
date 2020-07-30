@@ -1,10 +1,14 @@
 import { pickr } from './colorpicker.js'; 
+import Tool from './tool.class.js';
+import Point, { getMouseCoord } from './utility.js'
 
 export default class Canvas {
 
     constructor(canvasId, brushSizeId, brushSizeLabel) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = canvas.getContext('2d');
+        this.tool; 
+        this.x;
 
         this.brush = {
             x: 0,
@@ -32,34 +36,67 @@ export default class Canvas {
         // Canvas mouse event listener
         this.canvas.onmousedown = e => this.startPosition(e);
         this.canvas.onmouseup = e => this.finishedPosition(e);
-        this.canvas.onmousemove = e => this.draw(e);
+        
         // Change brush size 
         this.brush.sizeElement.oninput = e => this.changeBrushSize(e);
-        // Change brush color
+        // Change brush color with pickr
         pickr.on('change', (color, instance) => {
             this.changeBrushColor(color);
         })
     
     }
 
-    startPosition(e) {
+    startPosition(e) { // On mouse down
         this.brush.painting = true;
-        this.draw(e);
+        this.savedData = this.ctx.getImageData(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+
+        this.canvas.onmousemove = e => this.onMouseMove(e);
+
+        this.startPos = getMouseCoord(e, this.canvas);
     }
-    finishedPosition(e) {
+    finishedPosition(e) { // On mouse up
         this.brush.painting = false;
         this.ctx.beginPath();
+        this.canvas.onmousemove = null;
+        document.onmouseup = null;
     }
-    draw(e) { 
-        if(!this.brush.painting) return;
+    onMouseMove(e) {
+        this.currPos = getMouseCoord(e, this.canvas);
+        
+        switch(this.tool) {
+            case Tool.TOOL_BRUSH:
+                this.draw(e);
+                break;
+            case Tool.TOOL_LINE:
+                this.drawLine(e);
+                break;
+            default:
+                break; 
+        }
+    }
+    setUp(e) {
         this.ctx.lineWidth = this.brush.size;
         this.ctx.lineCap = this.brush.cap;
         this.ctx.strokeStyle = this.brush.color;
+    }
+    draw(e) { 
+        if(!this.brush.painting) return;
+        this.setUp(e);
 
         this.ctx.lineTo(e.clientX, e.clientY);
         this.ctx.stroke();
         this.ctx.beginPath();
         this.ctx.moveTo(e.clientX, e.clientY); 
+    }
+    drawLine(e) { 
+        if(!this.brush.painting) return;
+        this.setUp(e);
+
+        this.ctx.putImageData(this.savedData, 0, 0);
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.startPos.x, this.startPos.y);
+        this.ctx.lineTo(this.currPos.x, this.currPos.y);
+        this.ctx.stroke();
     }
     changeBrushSize(e) {
         this.brush.size = this.brush.sizeElement.value; 
