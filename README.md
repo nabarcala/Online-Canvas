@@ -7,6 +7,9 @@ A canvas accessible from the web. Draw anything you want!
 ### Features:
 * Change brush color
 * Change brush size
+* Draw shapes:
+    * Lines
+* Eraser tool
 
 # Acknowledgement
 * [Simonwep's pickr](https://github.com/Simonwep/pickr#getting-started) - Flat, Simple, Hackable Color-Picker.
