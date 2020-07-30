@@ -1,28 +1,9 @@
-
-// Canvas variables
-var canvas = document.querySelector('#canvas'), 
-    c = canvas.getContext('2d'),  
-    brush = {
-        x: 0,
-        y: 0,
-        color: '#000000',
-        size: 1,
-        cap: 'round',
-        painting: false, 
-    },
-    strokes = [],
-    currentStroke = null;
-
-var currentColor = document.querySelector('#color-picker');
-var BrushSize = document.querySelector('#brush-size');
-var BrushSizeLabel = document.querySelector('#current-brush-size');
-
 // Simple example, see optional options for more configuration.
 const pickr = Pickr.create({
     el: '.color-picker',
     theme: 'classic', // or 'monolith', or 'nano'
     default: 'black',
-    closeWithKey: 'Enter',
+    closeWithKey: 'Enter', 
     padding: 21,
     swatches: [
         '#000000',
@@ -62,6 +43,46 @@ const pickr = Pickr.create({
     }
 });
 
+// Canvas variables
+var canvas = document.querySelector('#canvas'), 
+    c = canvas.getContext('2d'),  
+    brush = {
+        x: 0,
+        y: 0,
+        color: '#000000',
+        size: 1,
+        cap: 'round',
+        painting: false, 
+    },
+    strokes = [],
+    currentStroke = null;
+
+// All data-commands
+document.querySelectorAll('[data-command]').forEach(
+    item => {
+        item.addEventListener('click', e => {
+            console.log(item.getAttribute('data-command'));
+        });
+    } 
+);
+// All data-tools, and select the one clicked
+document.querySelectorAll('[data-tool]').forEach(
+    item => {
+        item.addEventListener('click', e => {
+            console.log(item.getAttribute('data-tool'));
+            document.querySelector('[data-tool].selected').classList.toggle('selected');
+            item.classList.toggle('selected');
+        });
+    }
+); 
+
+var currentColor = document.querySelector('#color-picker');
+var BrushSize = document.querySelector('#brush-size');
+var BrushSizeLabel = document.querySelector('#current-brush-size');
+
+const sliderVal = document.querySelector('.slider-val span');
+
+
 window.addEventListener('load', () => {
 
     // Set length and width of canvas
@@ -97,6 +118,14 @@ window.addEventListener('load', () => {
 // Event Listeners
 // currentColor.addEventListener('input', ChangeColor);
 BrushSize.addEventListener('input', ChangeBrushSize);
+BrushSize.oninput = (() => {
+    let val = BrushSize.value;
+    brush.size = val;
+    BrushSizeLabel.innerHTML = val;
+    sliderVal.textContent = val;
+    // sliderVal.style.left = ((val+100)/2) + '%';
+    // sliderVal.classList.add('show'); 
+})
 
 // Change color of the brush
 pickr.on('change', (color, instance) => {
@@ -111,8 +140,11 @@ function ChangeColor() {
 }
 // Change width of brush
 function ChangeBrushSize() {
-    brush.size = BrushSize.value;
-    BrushSizeLabel.innerHTML = brush.size;
+    let val = BrushSize.value;
+    brush.size = val;
+    BrushSizeLabel.innerHTML = val;
+    sliderVal.textContent = val;
+    // sliderVal
 }
 
 

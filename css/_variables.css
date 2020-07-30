@@ -1,0 +1,16 @@
+
+/* Colors */
+
+:root {
+    --color-bg: #27272d;
+    --color-border: #4e5664;
+    --color-white: #fff;
+    --color-black: #000000;
+    --color-hover: #37373f;
+    --color-text: #98989b;
+    --color-slider: #407693;
+    --color-slider-light: #cee7f5;
+    --color-slider-dark: #36657e;
+
+    --color-outside-canvas: rgb(186, 213, 228);
+}

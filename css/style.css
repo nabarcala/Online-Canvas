@@ -1,4 +1,6 @@
 
+@import url("_variables.css");
+
 /* ////////// All ////////// */
 
 * {
@@ -14,20 +16,19 @@
 
 /* ////////// Nav ////////// */
 
-
 .toolbar {
     width: 100%;
-    background-color: #27272d;
+    background-color: var(--color-bg);
     display: flex;
     flex-direction: row;
-    border-bottom: 1px solid #4e5664; 
+    border-bottom: 1px solid var(--color-border); 
     position: absolute; 
 }
 .toolbar * {
     margin: 5px 10px;
 }
 .toolbar a {
-    border: 3px solid #37373f;
+    border: 3px solid var(--color-hover);
     border-radius: 10%;
     text-decoration: none;
 }
@@ -36,13 +37,13 @@
     margin-top: 15px;
     font-size: 1rem;
     text-align: center;
-    color: #98989b; 
+    color: var(--color-text); 
 }
 .toolbar a:hover {
-    background-color: #37373f;
+    background-color: var(--color-hover);
 }
 .toolbar a i {
-    color: #98989b; 
+    color: var(--color-text); 
     padding: 5px;
     font-size: 1.4rem;
     /* align-self: center; */
@@ -50,24 +51,29 @@
 
 /* ////////// Color Picker ////////// */
 
-.toolbar .color-wrapper {
+.toolbar .brush-wrapper {
     display: flex;
     flex-direction: row;
     margin-top: 5px;
-    border: 3px solid #37373f;
-    border-radius: 2%;
-    color: #98989b; 
+    border: 3px solid var(--color-hover);
+    border-radius: 4%;
+    color: var(--color-text); 
 }
-.toolbar .color-wrapper:hover {
-    background-color: #37373f;
+.toolbar .brush-wrapper:hover {
+    background-color: var(--color-hover);
 }   
-.toolbar .color-wrapper #current-brush-size {
+.toolbar .brush-wrapper #current-brush-size {
     align-self: center;
 } 
+.toolbar .selected {
+    background-color: var(--color-hover);
+}
 
 /* ////////// Brush Size Slider ////////// */
 
-
+.slider {
+    
+}
 
 /* ////////// Canvas ////////// */
 
@@ -76,11 +82,11 @@
     /* height: 100vh; */
     /* border: 1px solid black; */
     /* display: block; */
-    background-color: rgb(186, 213, 228);
+    background-color: var(--color-outside-canvas);
     /* margin: 0 5px; */
 }
 #canvas {
-    background-color: #fff; 
-    border: 1px solid black;
+    background-color: var(--color-white); 
+    border: 1px solid var(--color-black);
     border-top: none;
 }

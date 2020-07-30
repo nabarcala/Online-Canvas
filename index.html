@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,29 +19,44 @@
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <![endif]--> 
 
         <!-- Toolbar -->
         <div class="container">
             <div class="toolbar">
-                <a href="#"><i class='bx bx-save' ></i></a>
-                <a href="#"><i class='bx bx-undo' ></i></a>
-                <a href="#"><i class='bx bx-redo' ></i></a>
-                <a href="#"><i class='bx bxs-eraser' ></i></a>
-                <a href="#"><p class="btn">Clear</p></a>
+                <a data-command="save" href="#"><i class='bx bx-save' ></i></a>
+                <a data-command="undo" href="#"><i class='bx bx-undo' ></i></a>
+                <a data-command="redo" href="#"><i class='bx bx-redo' ></i></a>
 
-                <div class="color-wrapper">
+                <a data-command="clear" href="#"><p class="btn">Clear</p></a>
+
+                <a data-tool="eraser" href="#"><i class='bx bxs-eraser' ></i></a>
+                <a data-tool="brush" class="selected" href="#"><i class='bx bx-paint' ></i></a>
+                
+                <a data-tool="fill" href="#"><i class='bx bxs-color-fill' ></i></a>
+
+                <a data-tool="line" href="#"><i class='bx bx-minus'></i></a>
+                <a data-tool="square" href="#"><i class='bx bx-square'></i></a>
+                <a data-tool="circle" href="#"><i class='bx bx-circle' ></i></a>
+
+                <div class="brush-wrapper">
                     <div class="color-picker"></div> 
-                    <input type="range" id="brush-size" min="1" max="100" value="1">   
-                    <span id="current-brush-size">1</span>
+                    <input class="slider" type="range" id="brush-size" min="1" max="100" value="5">   
+                    <span id="current-brush-size">5</span>
                 </div>
+
+                
 
             </div> <!-- End Toolbar -->
         </div>
+
+        <!-- <div class="slider-val"> 
+            <span></span>
+        </div>  -->
     
         <!-- Canvas -->
         <div class="container-toolbar">
-            <canvas id="canvas"></canvas>
+            <canvas id="canvas"></canvas> 
         </div>
         
         <script src="js/canvas.js" async defer></script> 
