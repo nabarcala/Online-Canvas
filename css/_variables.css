@@ -11,6 +11,7 @@
     --color-slider: #407693;
     --color-slider-light: #cee7f5;
     --color-slider-dark: #36657e;
+    --color-disabled: rgb(32, 32, 32);
 
     --color-outside-canvas: rgb(186, 213, 228);
 }

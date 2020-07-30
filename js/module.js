@@ -21,11 +21,13 @@ document.querySelectorAll('[data-command]').forEach(
 document.querySelectorAll('[data-tool]').forEach(
     item => {
         item.addEventListener('click', e => {
-            document.querySelector('[data-tool].selected').classList.toggle('selected');
-            item.classList.toggle('selected');
-
             let selectedTool = item.getAttribute('data-tool');
-            canvas.activeTool = selectedTool;
+            if(item.classList.contains('disabled')) canvas.activeTool = Tool.TOOL_BRUSH;
+            else {
+                document.querySelector('[data-tool].selected').classList.toggle('selected');
+                item.classList.toggle('selected');
+                canvas.activeTool = selectedTool;
+            }
 
             switch(selectedTool) {
                 case Tool.TOOL_ERASER:
