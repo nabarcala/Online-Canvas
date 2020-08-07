@@ -40,6 +40,7 @@ export default class Canvas {
         
         // Change brush size 
         this.brush.sizeElement.oninput = e => this.changeBrushSize(e);
+
         // Change brush color with pickr
         pickr.on('change', (color, instance) => {
             this.changeBrushColor(color);
@@ -48,8 +49,6 @@ export default class Canvas {
         // Clear 
         this.clearElement.onclick = e => this.clearCanvas(e);
         
-        
-
     }
 
     startPosition(e) { // On mouse down
@@ -61,8 +60,7 @@ export default class Canvas {
         this.startPos = getMouseCoord(e, this.canvas);
 
         if(this.tool == Tool.TOOL_FILL) {
-            console.log('picked fill');
-                new Fill(this.canvas, this.startPos, this.brush.color);
+            new Fill(this.canvas, this.startPos, this.brush.color);
         }
     }
     finishedPosition(e) { // On mouse up

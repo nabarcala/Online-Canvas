@@ -11,15 +11,48 @@
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
+        <!-- Boxicons -->
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <!-- Color Pickr -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/> <!-- 'classic' theme -->
+        <!-- Custom -->
         <link rel="stylesheet" href="css/style.css">
+        <link rel="shortcut icon" href="img/canvas-palette.ico">
+
+        <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]--> 
+
+        <!-- <div id="overlay"> </div> -->
+        <!-- Welcome Popup -->
+        <div class="welcome-popup popup-bg" id="welcome">
+            <div id="popup-box">
+                <div class="close-section">
+                    <div class="close" id="close-btn">
+                        <p>+</p>
+                    </div>
+                </div>
+                
+                <div class="logo-img">
+                    <img src="img/painting-palette-icon.png" alt="">
+                </div>
+                <div class="popup-text">
+                    <h1>Hi! Ready to get creative?</h1>
+                    <p>Check this stuff out!</p>
+                </div>
+                <div class="popup-close">
+                    <a href="#" id="start-drawing-btn"><h3 class="btn">No! I want to start drawing!</h3></a> 
+                    <!-- <h3>No? Ok sorry</h3> -->
+                    <!-- <a id="close-window" href="">Close</a> -->
+                    <!-- <label for="dont-show-again">Don't show this again</label>
+                    <input type="checkbox" name="dont show this again" id="dont-show-again"> -->
+                </div>
+            </div>
+        </div>
 
         <!-- Toolbar -->
         <div class="container">
@@ -28,7 +61,7 @@
                 <a data-command="undo" class="disabled" href="#"><i class='bx bx-undo' ></i></a>
                 <a data-command="redo" class="disabled" href="#"><i class='bx bx-redo' ></i></a>
 
-                <a id="clear"data-command="clear" href="#"><p class="btn">Clear</p></a>
+                <a id="clear" data-command="clear" href="#"><p class="btn">Clear</p></a>
                 <a data-tool="eraser" href="#"><i class='bx bxs-eraser' ></i></a>
 
                 <a data-tool="brush" class="selected" href="#"><i class='bx bx-paint' ></i></a>
@@ -60,7 +93,11 @@
         </div>
         
         <script type="module" src="js/module.js" async defer></script> 
-        <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+        <!-- Color Pickr -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script> -->
+        <!-- Welcome Popup -->
+        <script src="js/welcome.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </body>
 </html>
