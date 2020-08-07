@@ -3,11 +3,13 @@
 export const pickr = Pickr.create({
     el: '.color-picker',
     theme: 'classic', // or 'monolith', or 'nano'
-    default: 'black',
+    defaultRepresentation: 'HEX', 
+    default: 'rgba(0, 0, 0, 1)', 
     closeWithKey: 'Enter',
+    closeOnScroll: true,
     padding: 21,
     swatches: [
-        '#000000',
+        'rgba(0, 0, 0, 1)',
         '#fff',
         'rgba(244, 67, 54, 1)',
         'rgba(233, 30, 99, 0.95)',
@@ -41,5 +43,27 @@ export const pickr = Pickr.create({
             clear: false,
             save: false
         }
+    },
+
+    // Translations, these are the default values.
+    i18n: {
+
+        // Strings visible in the UI
+       'ui:dialog': 'color picker dialog',
+       'btn:toggle': 'toggle color picker dialog',
+       'btn:swatch': 'color swatch',
+       'btn:last-color': 'use previous color',
+       'btn:save': 'Save',
+       'btn:cancel': 'Cancel',
+       'btn:clear': 'Clear',
+
+       // Strings used for aria-labels
+       'aria:btn:save': 'save and close',
+       'aria:btn:cancel': 'cancel and close',
+       'aria:btn:clear': 'clear and close',
+       'aria:input': 'color input field',
+       'aria:palette': 'color selection area',
+       'aria:hue': 'hue selection slider',
+       'aria:opacity': 'selection slider'
     }
 }); 
