@@ -1,6 +1,7 @@
 import { pickr } from './colorpicker.js'; 
 import Tool from './tool.class.js';
 import Point, { getMouseCoord } from './utility.js'
+import Fill from './fill.class.js';
 
 export default class Canvas {
 
@@ -13,7 +14,7 @@ export default class Canvas {
         this.brush = {
             x: 0,
             y: 0,
-            color: '#000000',
+            color: 'rgba(0, 0, 0, 1)',
             sizeElement: document.getElementById(brushSizeId),
             size: 5,    // default size
             sizeLabel: document.getElementById(brushSizeLabel),
@@ -24,7 +25,6 @@ export default class Canvas {
         this.canvas.height = window.innerHeight;
         this.canvas.width = window.innerWidth; 
         this.clearElement = document.getElementById(clearId);
-        
     }
 
     // Get active tool
@@ -45,11 +45,11 @@ export default class Canvas {
             this.changeBrushColor(color);
         })
 
+        // Clear 
         this.clearElement.onclick = e => this.clearCanvas(e);
-        // document.getElementById('clear').on('click', () => {
-        //     this.canvas.clearRect(0, 0, 300, 300);
-        // });
-    
+        
+        
+
     }
 
     startPosition(e) { // On mouse down
@@ -59,6 +59,11 @@ export default class Canvas {
         this.canvas.onmousemove = e => this.onMouseMove(e);
 
         this.startPos = getMouseCoord(e, this.canvas);
+
+        if(this.tool == Tool.TOOL_FILL) {
+            console.log('picked fill');
+                new Fill(this.canvas, this.startPos, this.brush.color);
+        }
     }
     finishedPosition(e) { // On mouse up
         this.brush.painting = false;
@@ -79,6 +84,9 @@ export default class Canvas {
             case Tool.TOOL_ERASER:
                 this.erase(e);
                 break; 
+            case Tool.TOOL_FILL:
+                
+                break;
             default:
                 break; 
         }

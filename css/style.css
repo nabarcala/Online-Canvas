@@ -92,6 +92,6 @@
 }
 #canvas {
     background-color: var(--color-white); 
-    border: 1px solid var(--color-black);
+    border: 1px solid var(--color-black); 
     border-top: none;
 }
