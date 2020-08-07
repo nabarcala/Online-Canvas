@@ -3,7 +3,7 @@ import Tool from './tool.class.js';
 import Canvas from './canvas.class.js'
 
 var canvas = new Canvas(
-    'canvas', 'brush-size', 'current-brush-size', 'clear'
+    'canvas', 'brush-size', 'current-brush-size', 'clear', 'save'
     ); 
 canvas.activeTool = Tool.TOOL_BRUSH;
 canvas.init(); 

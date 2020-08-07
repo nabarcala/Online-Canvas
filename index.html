@@ -27,7 +27,6 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]--> 
 
-        <!-- <div id="overlay"> </div> -->
         <!-- Welcome Popup -->
         <div class="welcome-popup popup-bg" id="welcome">
             <div id="popup-box">
@@ -57,7 +56,7 @@
         <!-- Toolbar -->
         <div class="container">
             <div class="toolbar">
-                <a data-command="save" class="disabled" href="#"><i class='bx bx-save' ></i></a>
+                <a id="save" data-command="save" download="image.png" href=""><i class='bx bx-save' ></i></a>
                 <a data-command="undo" class="disabled" href="#"><i class='bx bx-undo' ></i></a>
                 <a data-command="redo" class="disabled" href="#"><i class='bx bx-redo' ></i></a>
 
@@ -89,7 +88,11 @@
     
         <!-- Canvas -->
         <div class="container-toolbar">
-            <canvas id="canvas"></canvas> 
+            <canvas id="canvas">
+                <div id="img-data-div">
+                    <a href="#" id="img-file" download="image.png">download image</a>
+                </div>
+            </canvas> 
         </div>
         
         <script type="module" src="js/module.js" async defer></script> 
