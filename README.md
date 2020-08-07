@@ -10,6 +10,8 @@ A canvas accessible from the web. Draw anything you want!
 * Draw shapes:
     * Lines
 * Eraser tool
+* Clear the canvas
+* Paint Bucket Tool
 
 # Acknowledgement
 * [Simonwep's pickr](https://github.com/Simonwep/pickr#getting-started) - Flat, Simple, Hackable Color-Picker.
