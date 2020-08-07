@@ -4,7 +4,7 @@ import Point, { getMouseCoord } from './utility.js'
 
 export default class Canvas {
 
-    constructor(canvasId, brushSizeId, brushSizeLabel) {
+    constructor(canvasId, brushSizeId, brushSizeLabel, clearId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = canvas.getContext('2d');
         this.tool; 
@@ -23,6 +23,7 @@ export default class Canvas {
 
         this.canvas.height = window.innerHeight;
         this.canvas.width = window.innerWidth; 
+        this.clearElement = document.getElementById(clearId);
         
     }
 
@@ -43,6 +44,11 @@ export default class Canvas {
         pickr.on('change', (color, instance) => {
             this.changeBrushColor(color);
         })
+
+        this.clearElement.onclick = e => this.clearCanvas(e);
+        // document.getElementById('clear').on('click', () => {
+        //     this.canvas.clearRect(0, 0, 300, 300);
+        // });
     
     }
 
@@ -72,7 +78,7 @@ export default class Canvas {
                 break;
             case Tool.TOOL_ERASER:
                 this.erase(e);
-                break;      
+                break; 
             default:
                 break; 
         }
@@ -112,6 +118,9 @@ export default class Canvas {
         this.ctx.stroke();
         this.ctx.beginPath();
         this.ctx.moveTo(e.clientX, e.clientY); 
+    }
+    clearCanvas(e) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     changeBrushSize(e) {
         this.brush.size = this.brush.sizeElement.value; 
