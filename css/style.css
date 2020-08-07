@@ -23,6 +23,7 @@
     flex-direction: row;
     border-bottom: 1px solid var(--color-border); 
     position: absolute;
+    align-content: center;
 }
 .toolbar * {
     margin: 5px 10px;
@@ -51,7 +52,7 @@
 .toolbar .selected {
     background-color: var(--color-hover);
 }
-.toolbar .disabled { 
+.toolbar .disabled {
     display: none;
 }
 

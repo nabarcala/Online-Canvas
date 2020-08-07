@@ -3,7 +3,7 @@ import Tool from './tool.class.js';
 import Canvas from './canvas.class.js'
 
 var canvas = new Canvas(
-    'canvas', 'brush-size', 'current-brush-size'
+    'canvas', 'brush-size', 'current-brush-size', 'clear'
     ); 
 canvas.activeTool = Tool.TOOL_BRUSH;
 canvas.init(); 
@@ -14,6 +14,12 @@ document.querySelectorAll('[data-command]').forEach(
     item => {
         item.addEventListener('click', e => {
             // console.log(item.getAttribute('data-command'));
+            // let selectedCommand = item.getAttribute('data-command');
+
+            // document.querySelector('[data-command].selected').classList.toggle('selected');
+            // item.classList.toggle('selected');
+            // canvas.activeTool = selectedTool;
+
         });
     } 
 );
