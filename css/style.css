@@ -1,84 +1,222 @@
 
 @import url("_variables.css");
 
+
+
 /* ////////// All ////////// */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: var(--font-fam);
 }
 .container {
     max-width: 100%;
     margin: auto;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-fam);
 }
+
+/* ////////// Top Nav ////////// */
+
+.toolbar-top {
+    width: 100%;
+    height: 45px;
+    background: var(--color-bg);
+    /* color: var(--color-white); */
+    /* padding: 0.5rem; */ 
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    /* align-items: center; */
+}
+.toolbar-top a {
+    font-weight: 300;
+    font-size: 15px;
+    filter: invert();
+    /* color: var(--color-white); */
+    padding: 10px 10px 10px 10px; 
+    cursor: pointer;
+}
+.toolbar-top a:hover {
+    filter: none;
+    color: var(--color-white);
+    background: var(--color-hover);
+}
+.toolbar-top a i {
+    /* color: black; */
+    /* filter: invert(); */
+    font-size: 20px;
+    padding-right: 0.3rem;
+}
+
 
 /* ////////// Nav ////////// */
 
-.toolbar {
-    width: 100%;
+
+.toolbar-left {
+    height: 100vh;
+    width: 45px;
     background-color: var(--color-bg);
     display: flex;
-    flex-direction: row;
-    border-bottom: 1px solid var(--color-border); 
+    flex-direction: column;
+    float: left;
+    margin-top: 45px;
     position: absolute;
-    align-content: center;
+    align-items: center;
+    border-top: 1px solid var(--color-hover);
 }
-.toolbar * {
-    margin: 5px 10px;
+.toolbar-left a { 
+    font-weight: 300;
+    font-size: 15px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    /* background-color: turquoise; */
 }
-.toolbar a {
-    border: 3px solid var(--color-hover);
+.toolbar-left a p {
+    filter: invert();
+}
+.toolbar-left a i {
+    font-size: 20px;
+    filter: invert();
+}
+.toolbar-left a:hover {
+    background-color: var(--color-hover);
+}
+.toolbar-left .selected {
+    background-color: var(--color-hover);
+}
+.toolbar-left .disabled {
+    display: none;
+}
+.divider {
+    width: 100%;
+    border-bottom: 1px solid var(--color-hover); 
+    margin: 1rem 0;
+}
+
+
+/* ////////// Slider / Tool Size ////////// */
+
+.slider {
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+}
+
+/* ////////// Color Picker ////////// */
+
+.brush-wrapper {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-text); 
+    align-items: center;
+    width: 100%;
+}
+.brush-wrapper div, .brush-wrapper span, .brush-wrapper input {
+    margin-top: 1rem; 
+}
+.brush-wrapper:hover {
+    /* background-color: var(--color-hover); */
+}   
+.brush-wrapper #current-brush-size {
+    align-self: center;
+} 
+
+
+/* ////////// Welcome menu ////////// */
+.welcome-popup {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    /* Change to "block" to activate the welcome popup  */
+    display: none;
+}
+.popup-bg {
+    background: #0008;
+    z-index: 1000;
+}
+#popup-box {
+    text-align: center;
+    width: 70%;
+    height: 70%;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 1px 2px 5px 3px black;
+}
+.close-section {
+    /* background-color: #0008; */
+    position: absolute;
+    padding: 5px 15px 5px 10px;
+    top: 0;
+    right: 0;
+}
+.close { 
+    font-size: 1.8rem;
+    color: var(--color-blue);
+    transform: rotate(-45deg);
+    cursor: pointer;
+    /* background-color: blue; */
+}
+.close p {
+    transition: transform 0.3s ease-in-out; 
+}
+.close-section:hover p {
+    color: var(--color-orange);
+    transform: scale(2);
+    transition: all 0.3s ease-in-out;
+}
+#dont-show-this {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+#close-window {
+    cursor: pointer;
+    border: 2px solid var(--color-hover);
     border-radius: 10%;
     text-decoration: none;
-}
-.toolbar a .btn {
-    /* display: inline-block; */
     margin-top: 15px;
     font-size: 1rem;
     text-align: center;
     color: var(--color-text); 
 }
-.toolbar a:hover {
-    background-color: var(--color-hover);
+.popup-text h1 {
+    padding: 1rem;
 }
-.toolbar a i {
-    color: var(--color-text); 
-    padding: 5px;
-    font-size: 1.4rem;
-    /* align-self: center; */
-}
-.toolbar .selected {
-    background-color: var(--color-hover);
-}
-.toolbar .disabled {
-    display: none;
-}
-
-/* ////////// Color Picker ////////// */
-
-.toolbar .brush-wrapper {
+.popup-close {
     display: flex;
-    flex-direction: row;
-    margin-top: 5px;
-    border: 3px solid var(--color-hover);
-    border-radius: 4%;
-    color: var(--color-text); 
+    justify-content: center;
+    margin: 2rem;
 }
-.toolbar .brush-wrapper:hover {
-    background-color: var(--color-hover);
-}   
-.toolbar .brush-wrapper #current-brush-size {
-    align-self: center;
-} 
-
-
-/* ////////// Brush Size Slider ////////// */
-
-.slider {
-    
+.popup-close a { 
+    background-color: var(--color-blue);
+    text-decoration: none;
+    border: 3px solid var(--color-blue);
+    border-radius: 2%;
+    position: absolute;
+    bottom: 10%;
 }
+.popup-close a .btn {
+    /* margin-top: 15px; */
+    padding: .5rem;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--color-black); 
+}
+.popup-close a:hover {
+    border: 3px solid var(--color-orange);
+    background-color: var(--color-orange);
+}
+
 
 /* ////////// Canvas ////////// */
 
@@ -94,4 +232,5 @@
     background-color: var(--color-white); 
     border: 1px solid var(--color-black); 
     border-top: none;
+    z-index: 5;
 }

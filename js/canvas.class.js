@@ -5,7 +5,7 @@ import Fill from './fill.class.js';
 
 export default class Canvas {
 
-    constructor(canvasId, brushSizeId, brushSizeLabel, clearId) {
+    constructor(canvasId, brushSizeId, brushSizeLabel, clearId, saveId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = canvas.getContext('2d');
         this.tool; 
@@ -25,6 +25,7 @@ export default class Canvas {
         this.canvas.height = window.innerHeight;
         this.canvas.width = window.innerWidth; 
         this.clearElement = document.getElementById(clearId);
+        this.savebtn = document.getElementById(saveId);
     }
 
     // Get active tool
@@ -40,6 +41,7 @@ export default class Canvas {
         
         // Change brush size 
         this.brush.sizeElement.oninput = e => this.changeBrushSize(e);
+
         // Change brush color with pickr
         pickr.on('change', (color, instance) => {
             this.changeBrushColor(color);
@@ -47,9 +49,10 @@ export default class Canvas {
 
         // Clear 
         this.clearElement.onclick = e => this.clearCanvas(e);
-        
-        
 
+        // save the canvas image
+        console.log('right before');
+        this.savebtn.onclick = e => this.saveImage(); 
     }
 
     startPosition(e) { // On mouse down
@@ -61,8 +64,7 @@ export default class Canvas {
         this.startPos = getMouseCoord(e, this.canvas);
 
         if(this.tool == Tool.TOOL_FILL) {
-            console.log('picked fill');
-                new Fill(this.canvas, this.startPos, this.brush.color);
+            new Fill(this.canvas, this.startPos, this.brush.color);
         }
     }
     finishedPosition(e) { // On mouse up
@@ -138,5 +140,18 @@ export default class Canvas {
         this.brush.color = color.toRGBA().toString();
         pickr.setColor(this.brush.color);
     }
-
+    saveImage() {
+        var imageFile = document.getElementById('save');
+        imageFile.setAttribute('download', 'image.png');
+        imageFile.setAttribute('href', this.canvas.toDataURL());  
+        
+    }
+    openImage() {
+        let img = new Image();
+        img.onload = function(){
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.drawImage(img, 0, 0);
+        };
+        img.src = 'image.png';
+    }
 }

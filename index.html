@@ -11,44 +11,92 @@
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
+        <!-- Boxicons -->
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <!-- Color Pickr -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/> <!-- 'classic' theme -->
+        <!-- Custom -->
         <link rel="stylesheet" href="css/style.css">
+        <link rel="shortcut icon" href="img/canvas-palette.ico">
+
+        <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]--> 
 
-        <!-- Toolbar -->
-        <div class="container">
-            <div class="toolbar">
-                <a data-command="save" class="disabled" href="#"><i class='bx bx-save' ></i></a>
-                <a data-command="undo" class="disabled" href="#"><i class='bx bx-undo' ></i></a>
-                <a data-command="redo" class="disabled" href="#"><i class='bx bx-redo' ></i></a>
-
-                <a id="clear"data-command="clear" href="#"><p class="btn">Clear</p></a>
-                <a data-tool="eraser" href="#"><i class='bx bxs-eraser' ></i></a>
-
-                <a data-tool="brush" class="selected" href="#"><i class='bx bx-paint' ></i></a>
-                
-                <a data-tool="fill" href="#"><i class='bx bxs-color-fill' ></i></a>
-
-                <a data-tool="line" href="#"><i class='bx bx-minus'></i></a>
-                <a data-tool="square" class="disabled" href="#"><i class='bx bx-square'></i></a>
-                <a data-tool="circle" class="disabled" href="#"><i class='bx bx-circle' ></i></a>
-
-                <div class="brush-wrapper">
-                    <div class="color-picker"></div> 
-                    <input class="slider" type="range" id="brush-size" min="1" max="100" value="5">   
-                    <span id="current-brush-size">5</span>
+        <!-- Welcome Popup -->
+        <div class="welcome-popup popup-bg" id="welcome">
+            <div id="popup-box">
+                <div class="close-section">
+                    <div class="close" id="close-btn">
+                        <p>+</p>
+                    </div>
                 </div>
-
                 
-
-            </div> <!-- End Toolbar -->
+                <div class="logo-img">
+                    <img src="img/painting-palette-icon.png" alt="">
+                </div>
+                <div class="popup-text">
+                    <h1>Hi! Ready to get creative?</h1>
+                    <p>Check this stuff out!</p>
+                </div>
+                <div class="popup-close">
+                    <a href="#" id="start-drawing-btn"><h3 class="btn">No! I want to start drawing!</h3></a> 
+                    <!-- <h3>No? Ok sorry</h3> -->
+                    <!-- <a id="close-window" href="">Close</a> -->
+                    <!-- <label for="dont-show-again">Don't show this again</label>
+                    <input type="checkbox" name="dont show this again" id="dont-show-again"> -->
+                </div>
+            </div>
         </div>
+
+        <div class="toolbar-top">
+            <a id="save" data-command="save" download="image.png"><i class='bx bx-save'></i>Save </a>
+            <a data-command="undo" class="disabled"><i class='bx bx-undo' ></i>Undo</a>
+            <a data-command="redo" class="disabled"><i class='bx bx-redo' ></i>Redo</a>
+            <!-- <a id="clear" data-command="clear" ><p class="btn">Clr</p></a> -->
+            <a id="clear" data-command="clear" ><i class='bx bxs-trash'></i>Clear</a> 
+
+        </div>
+
+        <div class="toolbar-left">
+            <!-- Eraser Tools -->
+            <a data-tool="eraser"><i class='bx bxs-eraser' ></i></a>
+            <!-- Paint Tools -->
+            <a data-tool="brush" class="selected"><i class='bx bx-paint' ></i></a>
+            <!-- Fill Bucket -->
+            <a data-tool="fill"><i class='bx bxs-color-fill' ></i></a>
+            <!-- Shapes -->
+            <a data-tool="line"><i class='bx bx-minus'></i></a>
+            <a data-tool="square"><i class='bx bx-square'></i></a>
+            <a data-tool="circle" class="disabled"><i class='bx bx-circle' ></i></a>
+            
+            
+
+            <span class="divider"> </span>
+
+            
+        
+            <!-- Tool Sizes and Colors -->
+
+            <div class="brush-wrapper">
+                <div class="color-picker"></div> 
+                <input class="slider" type="range" id="brush-size" min="1" max="100" value="5" orient="vertical">   
+                
+                <!-- <div class="all-sizes">
+                    <span class="size size1"> 3 </span>
+                    <span class="size size2">0</span>
+                </div> -->
+                
+                <span id="current-brush-size">5</span>
+            </div>
+            
+
+        </div>
+
 
         <!-- <div class="slider-val"> 
             <span></span>
@@ -56,11 +104,19 @@
     
         <!-- Canvas -->
         <div class="container-toolbar">
-            <canvas id="canvas"></canvas> 
+            <canvas id="canvas">
+                <div id="img-data-div">
+                    <a href="#" id="img-file" download="image.png">download image</a>
+                </div>
+            </canvas> 
         </div>
         
         <script type="module" src="js/module.js" async defer></script> 
-        <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+        <!-- Color Pickr -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script> -->
+        <!-- Welcome Popup -->
+        <script src="js/welcome.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </body>
 </html>
