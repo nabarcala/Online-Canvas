@@ -53,34 +53,50 @@
             </div>
         </div>
 
-        <!-- Toolbar -->
-        <div class="container">
-            <div class="toolbar">
-                <a id="save" data-command="save" download="image.png" href=""><i class='bx bx-save' ></i></a>
-                <a data-command="undo" class="disabled" href="#"><i class='bx bx-undo' ></i></a>
-                <a data-command="redo" class="disabled" href="#"><i class='bx bx-redo' ></i></a>
+        <div class="toolbar-top">
+            <a id="save" data-command="save" download="image.png"><i class='bx bx-save'></i>Save </a>
+            <a data-command="undo" class="disabled"><i class='bx bx-undo' ></i>Undo</a>
+            <a data-command="redo" class="disabled"><i class='bx bx-redo' ></i>Redo</a>
+            <!-- <a id="clear" data-command="clear" ><p class="btn">Clr</p></a> -->
+            <a id="clear" data-command="clear" ><i class='bx bxs-trash'></i>Clear</a> 
 
-                <a id="clear" data-command="clear" href="#"><p class="btn">Clear</p></a>
-                <a data-tool="eraser" href="#"><i class='bx bxs-eraser' ></i></a>
-
-                <a data-tool="brush" class="selected" href="#"><i class='bx bx-paint' ></i></a>
-                
-                <a data-tool="fill" href="#"><i class='bx bxs-color-fill' ></i></a>
-
-                <a data-tool="line" href="#"><i class='bx bx-minus'></i></a>
-                <a data-tool="square" class="disabled" href="#"><i class='bx bx-square'></i></a>
-                <a data-tool="circle" class="disabled" href="#"><i class='bx bx-circle' ></i></a>
-
-                <div class="brush-wrapper">
-                    <div class="color-picker"></div> 
-                    <input class="slider" type="range" id="brush-size" min="1" max="100" value="5">   
-                    <span id="current-brush-size">5</span>
-                </div>
-
-                
-
-            </div> <!-- End Toolbar -->
         </div>
+
+        <div class="toolbar-left">
+            <!-- Eraser Tools -->
+            <a data-tool="eraser"><i class='bx bxs-eraser' ></i></a>
+            <!-- Paint Tools -->
+            <a data-tool="brush" class="selected"><i class='bx bx-paint' ></i></a>
+            <!-- Fill Bucket -->
+            <a data-tool="fill"><i class='bx bxs-color-fill' ></i></a>
+            <!-- Shapes -->
+            <a data-tool="line"><i class='bx bx-minus'></i></a>
+            <a data-tool="square"><i class='bx bx-square'></i></a>
+            <a data-tool="circle" class="disabled"><i class='bx bx-circle' ></i></a>
+            
+            
+
+            <span class="divider"> </span>
+
+            
+        
+            <!-- Tool Sizes and Colors -->
+
+            <div class="brush-wrapper">
+                <div class="color-picker"></div> 
+                <input class="slider" type="range" id="brush-size" min="1" max="100" value="5" orient="vertical">   
+                
+                <!-- <div class="all-sizes">
+                    <span class="size size1"> 3 </span>
+                    <span class="size size2">0</span>
+                </div> -->
+                
+                <span id="current-brush-size">5</span>
+            </div>
+            
+
+        </div>
+
 
         <!-- <div class="slider-val"> 
             <span></span>
