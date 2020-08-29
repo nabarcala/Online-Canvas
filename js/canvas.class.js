@@ -89,6 +89,9 @@ export default class Canvas {
             case Tool.TOOL_SQUARE:
                 this.drawSquare(e);
                 break;
+            case Tool.TOOL_CIRCLE:
+                this.drawCircle(e);
+                break;
             default:
                 break; 
         }
@@ -126,6 +129,16 @@ export default class Canvas {
         this.ctx.beginPath();
 
         this.ctx.strokeRect(this.startPos.x, this.startPos.y, this.currPos.x - this.startPos.x, this.currPos.y - this.startPos.y);
+    }
+    drawCircle(e) {
+        if(!this.brush.painting) return;
+        this.setUp(e);
+
+        this.ctx.putImageData(this.savedData, 0, 0);
+        this.ctx.beginPath();
+
+        this.ctx.arc(this.startPos.x, this.startPos.y, this.currPos.x - this.startPos.x, 0, Math.PI * 2);
+        this.ctx.stroke(); 
     }
     erase(e) {
         this.ctx.lineWidth = this.brush.size;
