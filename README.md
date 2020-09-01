@@ -9,9 +9,17 @@ A canvas accessible from the web. Draw anything you want!
 * Change brush size
 * Draw shapes:
     * Lines
+    * Squares
+    * Circles
 * Eraser tool
 * Clear the canvas
 * Paint Bucket Tool
+* Save the image
+
+### Upcoming Features:
+* Upload image to canvas
+* Undo and redo buttons
+* Crop canvas image 
 
 # Acknowledgement
 * [Simonwep's pickr](https://github.com/Simonwep/pickr#getting-started) - Flat, Simple, Hackable Color-Picker.
