@@ -5,7 +5,7 @@ import Fill from './fill.class.js';
 
 export default class Canvas {
 
-    constructor(canvasId, brushSizeId, brushSizeLabel, clearId, saveId) {
+    constructor(canvasId, brushSizeId, brushSizeLabel, clearId, saveId, openId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = canvas.getContext('2d');
         this.tool; 
@@ -26,6 +26,7 @@ export default class Canvas {
         this.canvas.width = window.innerWidth; 
         this.clearElement = document.getElementById(clearId);
         this.savebtn = document.getElementById(saveId);
+        this.openImg = document.getElementById(openId);
     }
 
     // Get active tool
@@ -51,8 +52,10 @@ export default class Canvas {
         this.clearElement.onclick = e => this.clearCanvas(e);
 
         // save the canvas image
-        console.log('right before');
         this.savebtn.onclick = e => this.saveImage(); 
+
+        // Open an image in the canvas
+        this.openImg.onchange = e => this.openUserImage(e);
     }
 
     startPosition(e) { // On mouse down
@@ -86,8 +89,11 @@ export default class Canvas {
             case Tool.TOOL_ERASER:
                 this.erase(e);
                 break; 
-            case Tool.TOOL_FILL:
-                
+            case Tool.TOOL_SQUARE:
+                this.drawSquare(e);
+                break;
+            case Tool.TOOL_CIRCLE:
+                this.drawCircle(e);
                 break;
             default:
                 break; 
@@ -118,6 +124,25 @@ export default class Canvas {
         this.ctx.lineTo(this.currPos.x, this.currPos.y);
         this.ctx.stroke();
     }
+    drawSquare(e) {
+        if(!this.brush.painting) return;
+        this.setUp(e);
+
+        this.ctx.putImageData(this.savedData, 0, 0);
+        this.ctx.beginPath();
+
+        this.ctx.strokeRect(this.startPos.x, this.startPos.y, this.currPos.x - this.startPos.x, this.currPos.y - this.startPos.y);
+    }
+    drawCircle(e) {
+        if(!this.brush.painting) return;
+        this.setUp(e);
+
+        this.ctx.putImageData(this.savedData, 0, 0);
+        this.ctx.beginPath();
+
+        this.ctx.arc(this.startPos.x, this.startPos.y, this.currPos.x - this.startPos.x, 0, Math.PI * 2);
+        this.ctx.stroke(); 
+    }
     erase(e) {
         this.ctx.lineWidth = this.brush.size;
         this.ctx.lineCap = this.brush.cap;
@@ -146,12 +171,56 @@ export default class Canvas {
         imageFile.setAttribute('href', this.canvas.toDataURL());  
         
     }
-    openImage() {
-        let img = new Image();
-        img.onload = function(){
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.drawImage(img, 0, 0);
+    // drawImage(ctx, img) {
+    //     if(!img.complete) {
+    //         console.log("eur wer");
+    //         setTimeout(function() {
+    //             drawImage(ctx, img);
+    //         }, 50);
+    //         return;
+    //     }
+
+        
+    // }
+    // getUserImage(img){
+    //     if(!img.complete) {
+    //         console.log("eur wer");
+    //         setTimeout(function() {
+    //             this.getUserImage(img);
+    //         }, 50);
+    //         return;
+    //     }
+    //     this.ctx.drawImage(img, 40, 45);
+    // }
+    openUserImage(e) {
+        console.log("begin");
+
+        var img = new Image();
+        img.src = './image.png'
+
+        // var reader = new FileReader();
+
+        // reader.onload = function(ev) {
+        //     console.log("onload");
+        //     var img = new Image();
+        //     img.onload = function() {
+        //         // this.canvas.width = img.width;
+        //         // this.canvas.height = img.height;
+        //         console.log("img");
+        //         console.log(img.width);
+        //         this.ctx.drawImage(img, 40, 45);
+        //     }
+        //     console.log("src");
+        //     img.src = ev.target.result;
+        //     // console.log(img.src);
+        // };
+        // console.log("readAsDataUrl");
+        // reader.readAsDataURL(e.target.files[0]);
+        
+        img.onload = function() {
+            console.log("g");
         };
-        img.src = 'image.png';
+
+        this.ctx.drawImage(img, 40, 45);
     }
 }
