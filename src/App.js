@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import './App.css';
 import Canvas from './Canvas';
-import Top from './Toolbar/Top';
-import Left from './Toolbar/Left';
+// import Top from './Toolbar/Top';
+// import Left from './Toolbar/Left';
 
 function App() {
 

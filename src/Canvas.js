@@ -1,16 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
-import rough from 'roughjs/bundled/rough.esm';
+// import rough from 'roughjs/bundled/rough.esm';
 
 import './Canvas.css';
 import './Toolbar/Toolbar.css';
 import Point, { getMouseCoord } from './utility';
 import Tools from './Tools';
-import { pickr } from './components/pickr';
+// import { pickr } from './components/pickr';
 import { Button } from './components/Button';
-import Fill from './Fill';
+// import Fill from './Fill';
 
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
+// import tippy from 'tippy.js';
+// import 'tippy.js/dist/tippy.css';
 
 
 function Canvas() {
@@ -59,11 +59,11 @@ function Canvas() {
         canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
     
         // DO NOT DRAW if the fill tool is selected
-        if(selectedTool === Tools.TOOL_FILL) {
-            // new Fill(canvasRef.current, canvasRef.current.startPos, brushRef.current.color);
+        // if(selectedTool === Tools.TOOL_FILL) {
+        //     new Fill(canvasRef.current, canvasRef.current.startPos, brushRef.current.color);
     
-            var imgData = canvasRef.current.savedData;
-        }
+        //     var imgData = canvasRef.current.savedData;
+        // }
     
     };
     // on Mouse Move
@@ -147,18 +147,18 @@ function Canvas() {
         }
         ctxRef.current.stroke();
     };
-    const erase = (x, y) => {
-        ctxRef.current.lineWidth = brushRef.current.size;
-        ctxRef.current.lineCap = brushRef.current.cap;
-        ctxRef.current.strokeStyle = "rgba(0,0,0,1.0)";
-        ctxRef.current.globalCompositeOperation = "destination-out";
+    // const erase = (x, y) => {
+    //     ctxRef.current.lineWidth = brushRef.current.size;
+    //     ctxRef.current.lineCap = brushRef.current.cap;
+    //     ctxRef.current.strokeStyle = "rgba(0,0,0,1.0)";
+    //     ctxRef.current.globalCompositeOperation = "destination-out";
 
-        ctxRef.current.lineTo(x, y);
-        ctxRef.current.stroke();
-        ctxRef.current.beginPath();
-        ctxRef.current.moveTo(x, y);
+    //     ctxRef.current.lineTo(x, y);
+    //     ctxRef.current.stroke();
+    //     ctxRef.current.beginPath();
+    //     ctxRef.current.moveTo(x, y);
         
-    };
+    // };
     // on Mouse Up - Done drawing
     const finishedPosition = () => {
         setIsDrawing(false);
@@ -244,7 +244,7 @@ function Canvas() {
                     ref={canvasRef}
                     > 
                 <div id="img-data-div">
-                    <a id="img-file" download="image.png">download image</a>
+                    {/* <a id="img-file" download="image.png">download image</a> */}
                 </div>
             </canvas>
         </div>
