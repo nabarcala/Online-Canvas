@@ -1,0 +1,30 @@
+@import url("../_variables.css");
+
+.btn {
+    /* padding: 8px 20px;
+    border-radius: 2px; */
+    outline: none;
+    border: none;
+    cursor: pointer;
+    
+  }
+.btn-nav {
+    background: transparent;
+    font-weight: 300;
+    font-size: 15px;
+    filter: invert();
+    padding: 10px 10px 10px 10px; 
+    cursor: pointer;
+}
+.btn-nav:hover { 
+    filter: none;
+    color: var(--color-white);
+    background: var(--color-hover);
+}
+.btn-nav i {
+    font-size: 20px;
+    padding-right: 0.3rem;
+}
+.selected { 
+    background-color: var(--color-hover);
+}

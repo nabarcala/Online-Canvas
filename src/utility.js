@@ -6,9 +6,9 @@ export default class Point {
     }
 }
 
-export function getMouseCoord(e, canvas) {
+export function getMouseCoord(clientX, clientY, canvas) {
     let rect = canvas.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    let y = e.clientY - rect.top;
+    let x = clientX - rect.left;
+    let y = clientY - rect.top;
     return new Point(x, y);
 }

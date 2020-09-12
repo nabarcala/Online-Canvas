@@ -1,5 +1,5 @@
-import { pickr } from './colorpicker.js'; 
-import Point from "./point.model.js"
+
+import Point from "./Point";
 
 export default class Fill {
 
@@ -9,23 +9,29 @@ export default class Fill {
         
         
         console.log(color);
+        console.log(canvas);
+        console.log(point);
         // console.log(color.toHEXA());
 
         // get HSVA color from pickr
-        var hsva = pickr.getColor();
-        console.log(hsva);
-        // convert it to hex theh rgba
-        var hex = hsva.toHEXA().toString();
-        console.log(hex);
-        console.log("to RGBA: " + hsva.toRGBA());
-        const fillColor = this.hexToRgba(hex);
+        // var hsva = pickr.getColor();
+        // console.log(hsva);
+        // // convert it to hex theh rgba
+        // var hex = hsva.toHEXA().toString();
+        // console.log(hex);
+        // console.log("to RGBA: " + hsva.toRGBA());
+        // const fillColor = this.hexToRgba(hex);
+
+        const fillColor = color;
 
         const targetColor = this.getPixel(point);
+        console.log(targetColor);
         
         console.log(fillColor);
 
         this.fillStack = [];
         this.floodFill(point, targetColor, fillColor);
+        console.log(this.fillStack)
         this.fillColor();
     }
 
