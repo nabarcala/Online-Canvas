@@ -1,73 +1,15 @@
+import Point from './Point';
 
-import Point from "./Point";
+export default function Fill(canvasRef, ctxRef, selectedColor) {
 
-export default class Fill {
-
-    constructor(canvas, point, color) {
-        this.ctx = canvas.getContext('2d');
-        this.imageData = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        
-        
-        console.log(color);
-        console.log(canvas);
-        console.log(point);
-        // console.log(color.toHEXA());
-
-        // get HSVA color from pickr
-        // var hsva = pickr.getColor();
-        // console.log(hsva);
-        // // convert it to hex theh rgba
-        // var hex = hsva.toHEXA().toString();
-        // console.log(hex);
-        // console.log("to RGBA: " + hsva.toRGBA());
-        // const fillColor = this.hexToRgba(hex);
-
-        const fillColor = color;
-
-        const targetColor = this.getPixel(point);
-        console.log(targetColor);
-        
-        console.log(fillColor);
-
-        this.fillStack = [];
-        this.floodFill(point, targetColor, fillColor);
-        console.log(this.fillStack)
-        this.fillColor();
-    }
-
-    getPixel(point) {
-        // if goes outside the canvas
-        if(point.x < 0 || point.y < 0 || point.x >= this.imageData.width || point.y >= this.imageData.height) {
-            return [-1, -1, -1, -1] // impossible color
-        }
-        else { // get the target color from where we click the fill bucket
-            const offset = (point.y * this.imageData.width + point.x) * 4;
-
-            return [
-                this.imageData.data[offset + 0], // r
-                this.imageData.data[offset + 1], // g
-                this.imageData.data[offset + 2], // b
-                this.imageData.data[offset + 3]  // a
-            ];
-        }
-    }
-    setPixel(point, color) {
-        const offset = (point.y * this.imageData.width + point.x) * 4;
-        // Set the pixel color
-        this.imageData.data[offset + 0] = color[0]; // r
-        this.imageData.data[offset + 1] = color[1]; // g
-        this.imageData.data[offset + 2] = color[2]; // b
-        this.imageData.data[offset + 3] = color[3]; // a
-        
-    }
     // convert hex to rgba
-    hexToRgba(hex) {
+    const hexToRgba = (hex) => {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         
         if(result == null) {
-            console.log('result: ' + result + ' hex: ' + hex);
+            // console.log('result: ' + result + ' hex: ' + hex);
             result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            console.log('NEW result: ' + result + ' hex: ' + hex);
+            // console.log('NEW result: ' + result + ' hex: ' + hex);
             return [
                 parseInt(result[1], 16),
                 parseInt(result[2], 16),
@@ -75,59 +17,93 @@ export default class Fill {
                 parseInt(result[4], 16)
             ];
         }
-
-        console.log('result: ' + result + ' hex: ' + hex);
+        // console.log('result: ' + result + ' hex: ' + hex);
         return [
             parseInt(result[1], 16),
             parseInt(result[2], 16),
             parseInt(result[3], 16),
             255
         ];
-        
-        
     }
-
+    // Get the pixel image of the given point
+    const getPixel = (point) => {
+        var imgData = canvasRef.current.savedData;
+        // if goes outside the canvas
+        if(point.x < 0 || point.y < 0 || point.x >= imgData.width || point.y >= imgData.height) {
+            return [-1, -1, -1, -1] // impossible color
+        }
+        else { // get the target color from where we click the fill bucket
+            const offset = (point.y * imgData.width + point.x) * 4;
+            return [
+                imgData.data[offset + 0], // r
+                imgData.data[offset + 1], // g
+                imgData.data[offset + 2], // b
+                imgData.data[offset + 3]  // a
+            ];
+        }
+    };
+    // Set the image data with the given color at the given point
+    const setPixel = (point, color) => {
+        var imgData = canvasRef.current.savedData;
+        const offset = (point.y * imgData.width + point.x) * 4;
+        // Set the pixel color
+        imgData.data[offset + 0] = color[0]; // r
+        imgData.data[offset + 1] = color[1]; // g
+        imgData.data[offset + 2] = color[2]; // b
+        imgData.data[offset + 3] = color[3]; // a
+    };
     // floodFill(pixel, target-color, replacement-color)
-    floodFill(point, target, fill) {
+    // Add the next locations to fill to the fillStack and set the pixel with the replacement color
+    const floodFill = (point, target, fill, fillStack) => {
         // target = replacement, return
-        if(this.doTheColorsMatch(target, fill)) return;
-
+        if(doTheColorsMatch(target, fill)) { 
+            return; 
+        }
         // else pixel color == target
-        const pixelColor = this.getPixel(point);
-        if(this.doTheColorsMatch(pixelColor, target)) {
+        const pixelColor = getPixel(point);
+        // console.log("pixel color: " + pixelColor);
+        if(doTheColorsMatch(pixelColor, target)) {
             // set pixel to replacement color
-            this.setPixel(point, fill);
-
+            setPixel(point, fill);
             // Save all the calls in the stack
-
             // perform flood fill for all for sides
-            this.fillStack.push([new Point(point.x + 1, point.y), target, fill]);
-            this.fillStack.push([new Point(point.x - 1, point.y), target, fill]);
-            this.fillStack.push([new Point(point.x, point.y + 1), target, fill]);
-            this.fillStack.push([new Point(point.x, point.y - 1), target, fill]);
-
+            fillStack.push([new Point(point.x + 1, point.y), target, fill]);
+            fillStack.push([new Point(point.x - 1, point.y), target, fill]);
+            fillStack.push([new Point(point.x, point.y + 1), target, fill]);
+            fillStack.push([new Point(point.x, point.y - 1), target, fill]);
             // return
         }
-    }
-    fillColor() {
+    };
+    // Go through the fill stack and begin to fill with the color
+    const fillColor = (fillStack) => {
+        var imageData = canvasRef.current.savedData;
         // if there are still calls left in the stack
-        if(this.fillStack.length) {
-            let range = this.fillStack.length;
+        if(fillStack.length > 0) {
+            let range = fillStack.length;
             
             for(let i = 0; i < range; i++) {
-                this.floodFill(this.fillStack[i][0], this.fillStack[i][1], this.fillStack[i][2]);
+                floodFill(fillStack[i][0], fillStack[i][1], fillStack[i][2], fillStack);
             }
-
-            this.fillStack.splice(0, range);
-
-            this.fillColor(); 
+            fillStack.splice(0, range);
+            fillColor(fillStack); 
         }
         else {
-            this.ctx.putImageData(this.imageData, 0, 0);
-            this.fillStack = [];
+            ctxRef.current.putImageData(imageData, 0, 0);
+            fillStack = [];
         }
-    }
-    doTheColorsMatch(a, b) {
+    };
+    // Check if the color targeted is the same as the given color
+    const doTheColorsMatch = (a, b) => {
         return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
-    }
+    };
+
+    // Convert to RGBA
+    const color = hexToRgba(selectedColor);
+    // Get the 
+    const point = new Point(canvasRef.current.startPos.x, canvasRef.current.startPos.y);
+    const targetColor = getPixel(point);
+    // Create the stack and begin to fill using Flood Fill Algorithm
+    const fillStack = [];
+    floodFill(point, targetColor, color, fillStack);
+    fillColor(fillStack);
 }

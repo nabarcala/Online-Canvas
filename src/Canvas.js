@@ -5,12 +5,13 @@ import './Canvas.css';
 import './Toolbar/Toolbar.css';
 import Point, { getMouseCoord } from './utility';
 import Tools from './Tools';
-// import { pickr } from './components/pickr';
-import { Button } from './components/Button';
-// import Fill from './Fill';
 
-// import tippy from 'tippy.js';
-// import 'tippy.js/dist/tippy.css';
+import { Button } from './components/Button';
+import Fill from './Fill';
+
+import { SketchPicker } from 'react-color';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css'; // optional
 
 
 function Canvas() {
@@ -20,6 +21,10 @@ function Canvas() {
     const brushRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const [selectedTool, setSelectedTool] = useState(Tools.TOOL_LINE);
+    const [selectedColor, setSelectedColor] = useState('#000000');
+    const [selectedSize, setSelectedSize] = useState("5")
+
+
 
     // Triggers only once when the app mounts
     useEffect(() => {
@@ -38,9 +43,10 @@ function Canvas() {
 
         // Save default brush settings for user override later
         const brush = {
-            x: 0,
+            x: 0, 
             y: 0,
-            color: 'rgba(51,0,255,1)',
+            // color: 'rgba(51,0,255,1)',
+            color: '#fffff',
             cap: 'round',
             size: '5'
         };
@@ -59,11 +65,9 @@ function Canvas() {
         canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
     
         // DO NOT DRAW if the fill tool is selected
-        // if(selectedTool === Tools.TOOL_FILL) {
-        //     new Fill(canvasRef.current, canvasRef.current.startPos, brushRef.current.color);
-    
-        //     var imgData = canvasRef.current.savedData;
-        // }
+        if(selectedTool === Tools.TOOL_FILL) {
+            new Fill(canvasRef, ctxRef, selectedColor);
+        }
     
     };
     // on Mouse Move
@@ -92,9 +96,6 @@ function Canvas() {
             case Tools.TOOL_ERASER:
                 draw(offsetX, offsetY); 
                 break;
-            // case Tools.TOOL_FILL:
-            //     new Fill(canvasRef.current, canvasRef.current.startPos, brushRef.current.color);
-            //     break;
             default:
                 break;
         }
@@ -147,6 +148,10 @@ function Canvas() {
         }
         ctxRef.current.stroke();
     };
+    // Clear the canvas
+    const clear = () => {
+        ctxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    };
     // const erase = (x, y) => {
     //     ctxRef.current.lineWidth = brushRef.current.size;
     //     ctxRef.current.lineCap = brushRef.current.cap;
@@ -165,25 +170,78 @@ function Canvas() {
         ctxRef.current.beginPath();
     };
     const setUp = () => {
-        ctxRef.current.lineWidth = brushRef.current.size;
+        ctxRef.current.lineWidth = selectedSize; 
         ctxRef.current.lineCap = brushRef.current.cap;
-        ctxRef.current.strokeStyle = brushRef.current.color;
+        ctxRef.current.strokeStyle = selectedColor;
         ctxRef.current.globalCompositeOperation = "source-over";
     };
+    const updateSize = (e) => {
+        setSelectedSize(e.target.value);
+    };
+    const saveImage = () => {
+        var imgFile = document.getElementById('save');
+        console.log(imgFile);
+        // imgFile.setAttribute('download', 'image.png');
+        // imgFile.setAttribute('href', canvasRef.current.toDataURL()); 
 
+        var dataURL = canvasRef.current.toDataURL();
+        console.log(dataURL);
+        // imgConverted.src = dataURL;
+
+        // IE/Edge Support (PNG Only)
+        if(window.navigator.msSaveBlob) {
+            window.navigator.msSaveBlob(canvasRef.current.msToBlob(), 'canvas-image.png');
+        } else {
+            const a = document.createElement("a");
+
+            document.body.appendChild(a);
+            a.href = canvasRef.current.toDataURL("image/png");
+            a.download = "canvas-image.png";
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
 
   return (
     <div>
 
         <div className="toolbar-top">
-            <input type="file" id="open" data-command="open" className="open-file" hidden />
-            <label htmlFor="open" id="open-file" className="disabled">
-                <i className='bx bx-folder-open'></i>Open
-            </label> 
-            <Button className='btns' id="save" data-command="save" download="image.png"><i className='bx bx-save'></i>Save </Button>
+            {/* Open */}
+            <input 
+                type="file" 
+                id="open"
+                className="open-file" 
+                hidden 
+            />
+            <label htmlFor="open" id="open-file" className="disabled"><i className='bx bx-folder-open'></i>Open </label> 
+            {/* Save Image */}
+            <button 
+                // type="radio"
+                id="save"
+                // download="image.png"
+                onClick={saveImage}
+                hidden
+            />
+            <label htmlFor="save" id="save"><i className='bx bx-save'></i>Save </label> 
+            {/* <Button 
+            className='btns' 
+            id="save" data-command="save" 
+            download="image.png">
+            <i className='bx bx-save'></i>Save </Button> */}
+
+
+            {/* <Button className='btns' id="save" data-command="save" download="image.png"><i className='bx bx-save'></i>Save </Button> */}
             {/* <Button className='btns disabled' data-command="undo"><i className='bx bx-undo' ></i>Undo </Button> */}
             {/* <Button className='btns disabled' data-command="redo"><i className='bx bx-redo' ></i>Redo </Button> */}
-            <Button className='btns' id="clear" data-command="clear"><i className='bx bxs-trash'></i>Clear </Button>
+            {/* <Button className='btns' id="clear" data-command="clear"><i className='bx bxs-trash'></i>Clear </Button> */}
+            
+            {/* Clear Canvas */}
+            <input 
+                type="radio" 
+                id="clear"
+                onClick={clear}
+            />
+            <label htmlFor="clear"><i className='bx bxs-trash'></i>Clear </label>
         </div>
 
         <div className="toolbar-left">
@@ -234,6 +292,36 @@ function Canvas() {
                 onChange={() => setSelectedTool("circle")}
             />
             <label htmlFor="circle"><i className='bx bx-circle'></i></label>
+
+            <div className="tool-settings">
+                {/* Color Picker */}
+                <Tippy interactive={true} placement={'right'} content={
+                    <SketchPicker
+                    id="colorPickerId"
+                    color={selectedColor}
+                    onChangeComplete={color => setSelectedColor(color.hex)}
+                    />
+                }>
+                    <div className="colorPickerArea" style={{ backgroundColor: selectedColor }}></div>
+                </Tippy>
+                
+            </div>
+            <div className="tool-size">
+                {/* Brush Size  */}
+                <input 
+                    type="range" 
+                    name="slider" 
+                    id="slider" 
+                    orient="vertical" 
+                    min="1" 
+                    max="100" 
+                    value={selectedSize}
+                    step="1"
+                    onChange={updateSize}
+                />
+                <div>{ selectedSize }</div>
+            </div>
+
         </div>
 
         <div className="container-canvas">
@@ -244,7 +332,7 @@ function Canvas() {
                     ref={canvasRef}
                     > 
                 <div id="img-data-div">
-                    {/* <a id="img-file" download="image.png">download image</a> */}
+                    <a id="img-file" download="image.png">download image</a>
                 </div>
             </canvas>
         </div>

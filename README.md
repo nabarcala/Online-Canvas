@@ -24,5 +24,5 @@ A painting canvas accessible from the web. Draw anything you want!
 
 # Acknowledgement
 * [Simonwep's pickr](https://github.com/Simonwep/pickr#getting-started) - Flat, Simple, Hackable Color-Picker.
-* [TippyJs](https://tippyjs.bootcss.com/) - A customizable tooltip and popover library.
+* [TippyJs](https://github.com/atomiks/tippyjs-react) - A customizable tooltip and popover library.
 * [React-color](https://casesandberg.github.io/react-color/) - A Collection of Color Pickers from Sketch,Photoshop, Chrome, Github, Twitter, Material Design & more.
