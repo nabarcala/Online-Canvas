@@ -74,7 +74,7 @@
     justify-content: center;
     margin: 2rem;
 }
-.popup-close a { 
+.popup-close button { 
     background-color: var(--color-blue);
     text-decoration: none;
     border: 3px solid var(--color-blue);
@@ -82,14 +82,14 @@
     position: absolute;
     bottom: 10%;
 }
-.popup-close a .btn {
+.popup-close button .btn {
     /* margin-top: 15px; */
     padding: .5rem;
     font-size: 1rem;
     text-align: center;
     color: var(--color-black); 
 }
-.popup-close a:hover {
+.popup-close button:hover {
     border: 3px solid var(--color-orange);
     background-color: var(--color-orange);
 }

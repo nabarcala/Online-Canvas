@@ -4,18 +4,12 @@ import './Welcome.css';
 export default function Welcome() {
 
     const [welcomeBox, setWelsomeBox] = useState(null);
-    const [closeBtn, setCloseBtn] = useState(null);
-    const [startDrawingBtn, setStartDrawingBtn] = useState(null);
 
     useEffect( () => {
         // Get all the buttons and save their state
         var welcomePop = document.getElementById("welcome");
-        var closeBtn = document.getElementById("close-btn");
-        var closeBtn2 = document.getElementById("start-drawing-btn");
 
         setWelsomeBox(welcomePop);
-        setCloseBtn(closeBtn);
-        setStartDrawingBtn(closeBtn2);
 
         // Set the window to open automatically on load
         // welcomePop.style.display = 'block';
@@ -41,9 +35,9 @@ export default function Welcome() {
                     </div>
                 </div>
                 
-                <div class="logo-img">
+                {/* <div className="logo-img">
                     <img src="img/painting-palette-icon.png" alt="" />
-                </div>
+                </div> */}
 
                 <div className="popup-text">
                     <h1>Hi! Ready to get creative?</h1>
@@ -51,12 +45,11 @@ export default function Welcome() {
                 </div>
 
                 <div className="popup-close">
-                    <a 
-                        href="#" 
+                    <button 
                         id="start-drawing-btn" 
                         onClick={closeWindow}>
                         <h3 className="btn">No! I want to start drawing!</h3>
-                    </a> 
+                    </button> 
                 </div>
 
             </div>

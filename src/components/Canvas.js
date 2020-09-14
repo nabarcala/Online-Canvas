@@ -21,8 +21,6 @@ function Canvas() {
     const [selectedTool, setSelectedTool] = useState(Tools.TOOL_BRUSH);
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [selectedSize, setSelectedSize] = useState("5")
-    const [selectedActive, setSelectedActive] = useState(Tools.TOOL_BRUSH);
-
 
     // Triggers only once when the app mounts
     useEffect(() => {
@@ -340,9 +338,9 @@ function Canvas() {
                     onMouseMove={mouseMove}
                     ref={canvasRef}
                     > 
-                <div id="img-data-div">
-                    <a id="img-file" download="image.png">download image</a>
-                </div>
+                {/* <div id="img-data-div"> */}
+                    {/* <a id="img-file" download="image.png">download image</a> */}
+                {/* </div> */}
             </canvas>
         </div>
 
