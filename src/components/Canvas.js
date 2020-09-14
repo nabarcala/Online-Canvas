@@ -66,15 +66,6 @@ function Canvas() {
         }
     
     };
-    function setAsActive(tool) {
-        // Get the previous and current tool
-        var oldActive = document.getElementById(selectedTool + "-label");
-        var newActive = document.getElementById(tool + "-label");
-        // Remove the previous selected class and add it to the active tool
-        oldActive.classList.remove('selected');
-        newActive.classList.add('selected');
-        // The new selected tool is chosen when the input is changed
-    };
     // on Mouse Move
     const mouseMove = ({nativeEvent}) => {
         if(!isDrawing) return;
@@ -213,10 +204,19 @@ function Canvas() {
         }
         reader.readAsDataURL(input);
     };
+    function setAsActive(tool) {
+        // Get the previous and current tool
+        var oldActive = document.getElementById(selectedTool + "-label");
+        var newActive = document.getElementById(tool + "-label");
+        // Remove the previous selected class and add it to the active tool
+        oldActive.classList.remove('selected');
+        newActive.classList.add('selected');
+        // The new selected tool is chosen when the input is changed
+    };
 
   return (
     <div>
-
+        {/* <Image /> */}
         <div className="toolbar-top">
             {/* Open */}
             <input 
