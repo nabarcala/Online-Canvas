@@ -2,11 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 // import rough from 'roughjs/bundled/rough.esm';
 
 import './Canvas.css';
-import './Toolbar/Toolbar.css';
+import './Toolbar.css';
 import Point, { getMouseCoord } from './utility';
 import Tools from './Tools';
-
-import { Button } from './components/Button';
 import Fill from './Fill';
 
 import { SketchPicker } from 'react-color';
@@ -20,10 +18,10 @@ function Canvas() {
     const ctxRef = useRef(null)
     const brushRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
-    const [selectedTool, setSelectedTool] = useState(Tools.TOOL_LINE);
+    const [selectedTool, setSelectedTool] = useState(Tools.TOOL_BRUSH);
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [selectedSize, setSelectedSize] = useState("5")
-
+    const [selectedActive, setSelectedActive] = useState(Tools.TOOL_BRUSH);
 
 
     // Triggers only once when the app mounts
@@ -33,8 +31,6 @@ function Canvas() {
         canvas.height = window.innerHeight - 50;
         canvas.startPos = new Point();
         canvas.currPos = new Point();
-        // Default tool is the brush
-        setSelectedTool(Tools.TOOL_BRUSH);
         
         const ctx = canvas.getContext("2d");
         ctxRef.current = ctx;
@@ -69,6 +65,15 @@ function Canvas() {
             new Fill(canvasRef, ctxRef, selectedColor);
         }
     
+    };
+    function setAsActive(tool) {
+        // Get the previous and current tool
+        var oldActive = document.getElementById(selectedTool + "-label");
+        var newActive = document.getElementById(tool + "-label");
+        // Remove the previous selected class and add it to the active tool
+        oldActive.classList.remove('selected');
+        newActive.classList.add('selected');
+        // The new selected tool is chosen when the input is changed
     };
     // on Mouse Move
     const mouseMove = ({nativeEvent}) => {
@@ -179,19 +184,11 @@ function Canvas() {
         setSelectedSize(e.target.value);
     };
     const saveImage = () => {
-        var imgFile = document.getElementById('save');
-        console.log(imgFile);
-        // imgFile.setAttribute('download', 'image.png');
-        // imgFile.setAttribute('href', canvasRef.current.toDataURL()); 
-
-        var dataURL = canvasRef.current.toDataURL();
-        console.log(dataURL);
-        // imgConverted.src = dataURL;
-
         // IE/Edge Support (PNG Only)
         if(window.navigator.msSaveBlob) {
             window.navigator.msSaveBlob(canvasRef.current.msToBlob(), 'canvas-image.png');
-        } else {
+        } 
+        else {
             const a = document.createElement("a");
 
             document.body.appendChild(a);
@@ -200,7 +197,22 @@ function Canvas() {
             a.click();
             document.body.removeChild(a);
         }
-    }
+    };
+    const openImage = (input) => {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var img = new Image();
+
+            img.onload = function() {
+                // Draw the image to the canvas
+                ctxRef.current.drawImage(img, 5, 5);
+            }
+            // Set the image source 
+            img.src = reader.result;
+        }
+        reader.readAsDataURL(input);
+    };
 
   return (
     <div>
@@ -210,30 +222,21 @@ function Canvas() {
             <input 
                 type="file" 
                 id="open"
-                className="open-file" 
+                accept="image/*"
+                onChange={(e) => openImage(e.target.files[0])}
                 hidden 
             />
-            <label htmlFor="open" id="open-file" className="disabled"><i className='bx bx-folder-open'></i>Open </label> 
+            <label htmlFor="open" id="open-file"><i className='bx bx-folder-open'></i>Open </label> 
             {/* Save Image */}
             <button 
-                // type="radio"
                 id="save"
-                // download="image.png"
                 onClick={saveImage}
                 hidden
             />
-            <label htmlFor="save" id="save"><i className='bx bx-save'></i>Save </label> 
-            {/* <Button 
-            className='btns' 
-            id="save" data-command="save" 
-            download="image.png">
-            <i className='bx bx-save'></i>Save </Button> */}
+            <label htmlFor="save" id="save-label"><i className='bx bx-save'></i>Save </label> 
 
-
-            {/* <Button className='btns' id="save" data-command="save" download="image.png"><i className='bx bx-save'></i>Save </Button> */}
             {/* <Button className='btns disabled' data-command="undo"><i className='bx bx-undo' ></i>Undo </Button> */}
             {/* <Button className='btns disabled' data-command="redo"><i className='bx bx-redo' ></i>Redo </Button> */}
-            {/* <Button className='btns' id="clear" data-command="clear"><i className='bx bxs-trash'></i>Clear </Button> */}
             
             {/* Clear Canvas */}
             <input 
@@ -241,7 +244,7 @@ function Canvas() {
                 id="clear"
                 onClick={clear}
             />
-            <label htmlFor="clear"><i className='bx bxs-trash'></i>Clear </label>
+            <label htmlFor="clear" id="clear-label"><i className='bx bxs-trash'></i>Clear </label>
         </div>
 
         <div className="toolbar-left">
@@ -251,47 +254,53 @@ function Canvas() {
                 id="eraser"
                 checked={selectedTool === "eraser"}
                 onChange={() => setSelectedTool("eraser")}
+                onClick={() => setAsActive("eraser")}
             />
-            <label htmlFor="eraser"><i className='bx bxs-eraser' ></i></label>
+            <label htmlFor="eraser" id="eraser-label"><i className='bx bxs-eraser' ></i></label>
             {/* Brush */}
             <input
                 type="radio"
                 id="brush"
                 checked={selectedTool === "brush"}
                 onChange={() => setSelectedTool("brush")}
+                onClick={() => setAsActive("brush")}
             />
-            <label htmlFor="brush"><i className='bx bx-paint' ></i></label>
+            <label htmlFor="brush" id="brush-label" className="selected"><i className='bx bx-paint' ></i></label>
             {/* Fill Bucket */}
             <input
                 type="radio"
                 id="fill"
                 checked={selectedTool === "fill"}
                 onChange={() => setSelectedTool("fill")}
+                onClick={() => setAsActive("fill")}
             />
-            <label htmlFor="fill"><i className='bx bxs-color-fill' ></i></label>
+            <label htmlFor="fill" id="fill-label"><i className='bx bxs-color-fill' ></i></label>
             {/* Shapes: line, square, circle */}
             <input
                 type="radio"
                 id="line"
                 checked={selectedTool === "line"}
                 onChange={() => setSelectedTool("line")}
+                onClick={() => setAsActive("line")}
             />
-            <label htmlFor="line"><i className='bx bx-minus'></i></label>
+            <label htmlFor="line" id="line-label"><i className='bx bx-minus'></i></label>
             <input
                 type="radio"
                 id="square"
                 checked={selectedTool === "square"}
                 onChange={() => setSelectedTool("square")}
+                onClick={() => setAsActive("square")}
             />
-            <label htmlFor="square"><i className='bx bx-square'></i></label>
+            <label htmlFor="square" id="square-label"><i className='bx bx-square'></i></label>
             {/* Circle */}
             <input
                 type="radio"
                 id="circle"
                 checked={selectedTool === "circle"}
                 onChange={() => setSelectedTool("circle")}
+                onClick={() => setAsActive("circle")}
             />
-            <label htmlFor="circle"><i className='bx bx-circle'></i></label>
+            <label htmlFor="circle" id="circle-label"><i className='bx bx-circle'></i></label>
 
             <div className="tool-settings">
                 {/* Color Picker */}

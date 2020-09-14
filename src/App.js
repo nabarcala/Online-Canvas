@@ -2,9 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import './App.css';
-import Canvas from './Canvas';
-// import Top from './Toolbar/Top';
-// import Left from './Toolbar/Left';
+import Canvas from './components/Canvas';
 
 function App() {
 
