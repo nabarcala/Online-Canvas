@@ -88,6 +88,7 @@ export default function Fill(canvasRef, ctxRef, selectedColor) {
             fillColor(fillStack); 
         }
         else {
+            console.log("end")
             ctxRef.current.putImageData(imageData, 0, 0);
             fillStack = [];
         }
@@ -97,6 +98,7 @@ export default function Fill(canvasRef, ctxRef, selectedColor) {
         return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
     };
 
+    
     // Convert to RGBA
     const color = hexToRgba(selectedColor);
     // Get the 
@@ -106,4 +108,7 @@ export default function Fill(canvasRef, ctxRef, selectedColor) {
     const fillStack = [];
     floodFill(point, targetColor, color, fillStack);
     fillColor(fillStack);
+
+    
+    return(canvasRef.current.savedData);
 }

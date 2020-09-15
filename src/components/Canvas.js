@@ -14,13 +14,21 @@ import 'tippy.js/dist/tippy.css'; // optional
 
 function Canvas() {
 
-    const canvasRef = useRef(null)
-    const ctxRef = useRef(null)
-    const brushRef = useRef(null);
+    const canvasRef = useRef(null);
+    const ctxRef = useRef(null);
+
     const [isDrawing, setIsDrawing] = useState(false);
+
     const [selectedTool, setSelectedTool] = useState(Tools.TOOL_BRUSH);
     const [selectedColor, setSelectedColor] = useState('#000000');
-    const [selectedSize, setSelectedSize] = useState("5")
+    const [selectedSize, setSelectedSize] = useState("5");
+
+    const undoStackRef = useRef([]);
+    const undoStackLimit = 10; 
+
+    const [currentLayer, setCurrentLayer] = useState(0);
+    const layerStackRef = useRef([[]]);
+    const layerStackLimit = 5;
 
     // Triggers only once when the app mounts
     useEffect(() => {
@@ -35,18 +43,38 @@ function Canvas() {
         // Canvas saved data. Ensures that the canvas is up to date and all previous strokes are remembered
         canvas.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-        // Save default brush settings for user override later
-        const brush = {
-            x: 0, 
-            y: 0,
-            // color: 'rgba(51,0,255,1)',
-            color: '#fffff',
-            cap: 'round',
-            size: '5'
-        };
-        brushRef.current = brush;
+        
 
     }, []);
+
+    const undo = () => {
+        console.log("undo time!")
+        // There must be elements in the undo stack
+        if(undoStackRef.current.length > 0) {
+            // Restore the last element
+            ctxRef.current.putImageData(undoStackRef.current[undoStackRef.current.length - 1], 0, 0);
+            // Remove the restored action
+            undoStackRef.current.pop();
+        } 
+        // If the stack is empty
+        else {
+            alert("No undo available!");
+        }
+    };
+    const redo = () => {
+        console.log("undo time!")
+        // There must be elements in the undo stack
+        if(undoStackRef.current.length > 0) {
+            // Restore the last element
+            ctxRef.current.putImageData(undoStackRef.current[undoStackRef.current.length - 1], 0, 0);
+            // Remove the restored action
+            undoStackRef.current.pop();
+        } 
+        // If the stack is empty
+        else {
+            alert("No undo available!");
+        }
+    };
     // on Mouse Down
     const startPosition = ({nativeEvent}) => {
         setIsDrawing(true);
@@ -57,11 +85,36 @@ function Canvas() {
         canvasRef.current.startPos = getMouseCoord(clientX, clientY, canvasRef.current);
         // Remember to get the canvas data so previous strokes are kept
         canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-    
+
         // DO NOT DRAW if the fill tool is selected
         if(selectedTool === Tools.TOOL_FILL) {
-            new Fill(canvasRef, ctxRef, selectedColor);
+            const savedData = Fill(canvasRef, ctxRef, selectedColor);
+            // console.log(savedData)
+            ctxRef.current.putImageData(savedData, 0, 0);
+
+            console.log(canvasRef.current.savedData)
         }
+
+        // Check the undo limit
+        if(undoStackRef.current.length >= undoStackLimit) {
+            // Remove the first element of the stack to keep the current relevent actions
+            undoStackRef.current.shift();
+        }
+        // Add the latest action of the canvas data onto the stack
+        undoStackRef.current.push(canvasRef.current.savedData);
+        // console.log(undoStackRef);
+
+        // Add to layer stack
+        layerStackRef.current[0].push(2);
+        layerStackRef.current[0].push(6);
+        layerStackRef.current[1] = [];
+        layerStackRef.current[1].push(1);
+        layerStackRef.current[1].push(2);
+        // layerStackRef[0][0] = "ooop"
+        console.log(layerStackRef.current)
+        console.log(layerStackRef.current[0])
+
+        // layerStackRef.current[0].push({"id": 4, "name": "more"});
     
     };
     // on Mouse Move
@@ -165,7 +218,7 @@ function Canvas() {
     };
     const setUp = () => {
         ctxRef.current.lineWidth = selectedSize; 
-        ctxRef.current.lineCap = brushRef.current.cap;
+        ctxRef.current.lineCap = 'round';
         ctxRef.current.strokeStyle = selectedColor;
         ctxRef.current.globalCompositeOperation = "source-over";
     };
@@ -214,7 +267,6 @@ function Canvas() {
 
   return (
     <div>
-        {/* <Image /> */}
         <div className="toolbar-top">
             {/* Open */}
             <input 
@@ -232,10 +284,6 @@ function Canvas() {
                 hidden
             />
             <label htmlFor="save" id="save-label"><i className='bx bx-save'></i>Save </label> 
-
-            {/* <Button className='btns disabled' data-command="undo"><i className='bx bx-undo' ></i>Undo </Button> */}
-            {/* <Button className='btns disabled' data-command="redo"><i className='bx bx-redo' ></i>Redo </Button> */}
-            
             {/* Clear Canvas */}
             <input 
                 type="radio" 
@@ -243,6 +291,18 @@ function Canvas() {
                 onClick={clear}
             />
             <label htmlFor="clear" id="clear-label"><i className='bx bxs-trash'></i>Clear </label>
+            {/* Undo */}
+            <button 
+                id="undo"
+                onClick={undo}
+                hidden
+            />
+            <label htmlFor="undo" id="save-label"><i className='bx bx-undo' ></i>Undo </label> 
+
+            {/* <Button className='btns disabled' data-command="undo"><i className='bx bx-undo' ></i>Undo </Button> */}
+            {/* <Button className='btns disabled' data-command="redo"><i className='bx bx-redo' ></i>Redo </Button> */}
+            
+            
         </div>
 
         <div className="toolbar-left">
