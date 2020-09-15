@@ -26,9 +26,9 @@ function Canvas() {
     const undoStackRef = useRef([]);
     const undoStackLimit = 10; 
 
-    const [currentLayer, setCurrentLayer] = useState(0);
-    const layerStackRef = useRef([[]]);
-    const layerStackLimit = 5;
+    // const [currentLayer, setCurrentLayer] = useState(0);
+    // const layerStackRef = useRef([[]]);
+    // const layerStackLimit = 5;
 
     // Triggers only once when the app mounts
     useEffect(() => {
@@ -48,20 +48,6 @@ function Canvas() {
     }, []);
 
     const undo = () => {
-        console.log("undo time!")
-        // There must be elements in the undo stack
-        if(undoStackRef.current.length > 0) {
-            // Restore the last element
-            ctxRef.current.putImageData(undoStackRef.current[undoStackRef.current.length - 1], 0, 0);
-            // Remove the restored action
-            undoStackRef.current.pop();
-        } 
-        // If the stack is empty
-        else {
-            alert("No undo available!");
-        }
-    };
-    const redo = () => {
         console.log("undo time!")
         // There must be elements in the undo stack
         if(undoStackRef.current.length > 0) {
@@ -105,14 +91,14 @@ function Canvas() {
         // console.log(undoStackRef);
 
         // Add to layer stack
-        layerStackRef.current[0].push(2);
-        layerStackRef.current[0].push(6);
-        layerStackRef.current[1] = [];
-        layerStackRef.current[1].push(1);
-        layerStackRef.current[1].push(2);
-        // layerStackRef[0][0] = "ooop"
-        console.log(layerStackRef.current)
-        console.log(layerStackRef.current[0])
+        // layerStackRef.current[0].push(2);
+        // layerStackRef.current[0].push(6);
+        // layerStackRef.current[1] = [];
+        // layerStackRef.current[1].push(1);
+        // layerStackRef.current[1].push(2);
+        // // layerStackRef[0][0] = "ooop"
+        // console.log(layerStackRef.current)
+        // console.log(layerStackRef.current[0])
 
         // layerStackRef.current[0].push({"id": 4, "name": "more"});
     
