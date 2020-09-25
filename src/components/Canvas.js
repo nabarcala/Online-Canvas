@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-// import rough from 'roughjs/bundled/rough.esm';
+import rough from 'roughjs/bundled/rough.esm';
 
 import './Canvas.css';
 import './Toolbar.css';
@@ -15,6 +15,7 @@ import 'tippy.js/dist/tippy.css'; // optional
 function Canvas() {
 
     const canvasRef = useRef(null);
+    const roughRef = useRef(null);
     const ctxRef = useRef(null);
 
     const [isDrawing, setIsDrawing] = useState(false);
@@ -34,6 +35,8 @@ function Canvas() {
     // Triggers only once when the app mounts
     useEffect(() => {
         const canvas = canvasRef.current;
+        const rc = roughRef.current;
+        // rc = rough.canvas;
         canvas.width = window.innerWidth - 65; 
         canvas.height = window.innerHeight - 50;
         canvas.startPos = new Point();
@@ -92,6 +95,17 @@ function Canvas() {
             alert("No undo available!");
         }
     };
+    const addCanvasData = () => {
+        canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+        // Check the undo limit
+        if(undoStackRef.current.length >= undoStackLimit) {
+            // Remove the first element of the stack to keep the current relevent actions
+            undoStackRef.current.shift();
+        }
+        // Add the latest action of the canvas data onto the stack
+        undoStackRef.current.push(canvasRef.current.savedData);
+        // redoStackRef.current.push(canvasRef.current.savedData);
+    }
     // on Mouse Down
     const startPosition = ({nativeEvent}) => {
         setIsDrawing(true);
@@ -120,14 +134,15 @@ function Canvas() {
             console.log(imgData)
         }
 
-        // Check the undo limit
-        if(undoStackRef.current.length >= undoStackLimit) {
-            // Remove the first element of the stack to keep the current relevent actions
-            undoStackRef.current.shift();
-        }
-        // Add the latest action of the canvas data onto the stack
-        undoStackRef.current.push(canvasRef.current.savedData);
-        // redoStackRef.current.push(canvasRef.current.savedData);
+        addCanvasData();
+
+        // // Check the undo limit
+        // if(undoStackRef.current.length >= undoStackLimit) {
+        //     // Remove the first element of the stack to keep the current relevent actions
+        //     undoStackRef.current.shift();
+        // }
+        // // Add the latest action of the canvas data onto the stack
+        // undoStackRef.current.push(canvasRef.current.savedData);
 
         // Add to layer stack
         // layerStackRef.current[0].push(2);
@@ -211,9 +226,10 @@ function Canvas() {
                     canvasRef.current.currPos.y - canvasRef.current.startPos.y);
                 break;
             case Tools.TOOL_CIRCLE:
-                ctxRef.current.arc(canvasRef.current.startPos.x, canvasRef.current.startPos.y,
-                    Math.abs(canvasRef.current.currPos.x - canvasRef.current.startPos.x), 
-                    0, Math.PI * 2);
+                roughRef.circle(100, 100, 80, { fill: 'red' });
+                // ctxRef.current.arc(canvasRef.current.startPos.x, canvasRef.current.startPos.y,
+                //     Math.abs(canvasRef.current.currPos.x - canvasRef.current.startPos.x), 
+                //     0, Math.PI * 2);
                 break;
             default:
                 break;
@@ -222,6 +238,7 @@ function Canvas() {
     };
     // Clear the canvas
     const clear = () => {
+        addCanvasData();
         ctxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     };
     // const erase = (x, y) => {
@@ -240,17 +257,13 @@ function Canvas() {
     const finishedPosition = () => {
         setIsDrawing(false);
         ctxRef.current.beginPath();
-        // canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-        // if(redoStackRef.current.length >= 1) {
-        //     redoStackRef.current.pop();
-        // }
-        // redoStackRef.current.push(canvasRef.current.savedData);
     };
     const setUp = () => {
         ctxRef.current.lineWidth = selectedSize; 
         ctxRef.current.lineCap = 'round';
         ctxRef.current.strokeStyle = selectedColor;
         ctxRef.current.globalCompositeOperation = "source-over";
+        // ctxRef.current.globalAlpha = 0.2;
     };
     const updateSize = (e) => {
         setSelectedSize(e.target.value);
