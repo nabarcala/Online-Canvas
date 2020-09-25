@@ -2,7 +2,7 @@
 
 A painting canvas accessible from the web. Draw anything you want!
 
-[Check out the live site!](https://online-canvas.netlify.app/)
+[Check out the live site!](https://www.natsketch.com/)
 
 ### Features:
 * Change brush color
@@ -16,9 +16,10 @@ A painting canvas accessible from the web. Draw anything you want!
 * Paint Bucket Tool
 * Save the image
 * Upload an image to canvas
+* Undo and Redo buttons
 
 ### Upcoming Features:
-* Undo and redo buttons
+* Redo button
 * Crop canvas image 
 * Layers
 

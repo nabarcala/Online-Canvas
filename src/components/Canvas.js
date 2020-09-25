@@ -23,6 +23,7 @@ function Canvas() {
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [selectedSize, setSelectedSize] = useState("5");
 
+    const redoStackRef = useRef([]);
     const undoStackRef = useRef([]);
     const undoStackLimit = 10; 
 
@@ -47,13 +48,43 @@ function Canvas() {
 
     }, []);
 
+    const redo = () => {
+        console.log("redo time!")
+        console.log(redoStackRef.current)
+
+        if(redoStackRef.current.length > 0) {
+            console.log(redoStackRef.current[redoStackRef.current.length - 1])
+            
+            // Put the image onto the canvas
+            ctxRef.current.putImageData(redoStackRef.current[redoStackRef.current.length - 1], 0, 0);
+            canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+            redoStackRef.current.pop();
+        } 
+        // If the stack is empty
+        else {
+            alert("No redo available!");
+        }
+    };
     const undo = () => {
         console.log("undo time!")
+        console.log(undoStackRef.current);
         // There must be elements in the undo stack
         if(undoStackRef.current.length > 0) {
+            // Add the element to the redo array
+            canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+            // if(redoStackRef.current.length >= 1) {
+            //     redoStackRef.current.pop();
+            // }
+            redoStackRef.current.push(canvasRef.current.savedData);
+            
+
+
             // Restore the last element
             ctxRef.current.putImageData(undoStackRef.current[undoStackRef.current.length - 1], 0, 0);
-            // Remove the restored action
+            
+            // console.log(imgData)
+            // // Remove the restored action
             undoStackRef.current.pop();
         } 
         // If the stack is empty
@@ -72,13 +103,21 @@ function Canvas() {
         // Remember to get the canvas data so previous strokes are kept
         canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
 
+        // Check the undo limit
+        // if(undoStackRef.current.length >= undoStackLimit) {
+        //     // Remove the first element of the stack to keep the current relevent actions
+        //     undoStackRef.current.shift();
+        // }
+        // // Add the latest action of the canvas data onto the stack
+        // undoStackRef.current.push(canvasRef.current.savedData);
+
         // DO NOT DRAW if the fill tool is selected
         if(selectedTool === Tools.TOOL_FILL) {
-            const savedData = Fill(canvasRef, ctxRef, selectedColor);
+            const imgData = Fill(canvasRef, ctxRef, selectedColor);
             // console.log(savedData)
-            ctxRef.current.putImageData(savedData, 0, 0);
+            ctxRef.current.putImageData(imgData, 0, 0);
 
-            console.log(canvasRef.current.savedData)
+            console.log(imgData)
         }
 
         // Check the undo limit
@@ -88,7 +127,7 @@ function Canvas() {
         }
         // Add the latest action of the canvas data onto the stack
         undoStackRef.current.push(canvasRef.current.savedData);
-        // console.log(undoStackRef);
+        // redoStackRef.current.push(canvasRef.current.savedData);
 
         // Add to layer stack
         // layerStackRef.current[0].push(2);
@@ -201,6 +240,11 @@ function Canvas() {
     const finishedPosition = () => {
         setIsDrawing(false);
         ctxRef.current.beginPath();
+        // canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+        // if(redoStackRef.current.length >= 1) {
+        //     redoStackRef.current.pop();
+        // }
+        // redoStackRef.current.push(canvasRef.current.savedData);
     };
     const setUp = () => {
         ctxRef.current.lineWidth = selectedSize; 
@@ -284,6 +328,13 @@ function Canvas() {
                 hidden
             />
             <label htmlFor="undo" id="save-label"><i className='bx bx-undo' ></i>Undo </label> 
+            {/* Redo */}
+            <button 
+                id="redo"
+                onClick={redo}
+                hidden
+            />
+            <label htmlFor="redo" id="save-label"><i className='bx bx-redo' ></i>Redo </label> 
 
             {/* <Button className='btns disabled' data-command="undo"><i className='bx bx-undo' ></i>Undo </Button> */}
             {/* <Button className='btns disabled' data-command="redo"><i className='bx bx-redo' ></i>Redo </Button> */}
@@ -320,6 +371,7 @@ function Canvas() {
             />
             <label htmlFor="fill" id="fill-label"><i className='bx bxs-color-fill' ></i></label>
             {/* Shapes: line, square, circle */}
+            {/* Line */}
             <input
                 type="radio"
                 id="line"
@@ -328,6 +380,7 @@ function Canvas() {
                 onClick={() => setAsActive("line")}
             />
             <label htmlFor="line" id="line-label"><i className='bx bx-minus'></i></label>
+            {/* Square */}
             <input
                 type="radio"
                 id="square"

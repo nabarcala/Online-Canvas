@@ -109,6 +109,9 @@ export default function Fill(canvasRef, ctxRef, selectedColor) {
     floodFill(point, targetColor, color, fillStack);
     fillColor(fillStack);
 
+    var imageData = canvasRef.current.savedData;
+    ctxRef.current.putImageData(imageData, 0, 0);
+
     
-    return(canvasRef.current.savedData);
+    return(imageData);
 }
