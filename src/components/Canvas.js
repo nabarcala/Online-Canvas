@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import rough from 'roughjs/bundled/rough.esm';
 
 import './Canvas.css';
 import './Toolbar.css';
@@ -10,12 +9,12 @@ import Fill from './Fill';
 import { SketchPicker } from 'react-color';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
-
+// import rough from 'roughjs/bundled/rough.esm';
 
 function Canvas() {
 
     const canvasRef = useRef(null);
-    const roughRef = useRef(null);
+    // const roughRef = useRef(null);
     const ctxRef = useRef(null);
 
     const [isDrawing, setIsDrawing] = useState(false);
@@ -35,7 +34,7 @@ function Canvas() {
     // Triggers only once when the app mounts
     useEffect(() => {
         const canvas = canvasRef.current;
-        const rc = roughRef.current;
+        // const rc = roughRef.current;
         // rc = rough.canvas;
         canvas.width = window.innerWidth - 65; 
         canvas.height = window.innerHeight - 50;
@@ -46,9 +45,6 @@ function Canvas() {
         ctxRef.current = ctx;
         // Canvas saved data. Ensures that the canvas is up to date and all previous strokes are remembered
         canvas.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-        
-
     }, []);
 
     const redo = () => {
@@ -57,11 +53,9 @@ function Canvas() {
 
         if(redoStackRef.current.length > 0) {
             console.log(redoStackRef.current[redoStackRef.current.length - 1])
-            
             // Put the image onto the canvas
             ctxRef.current.putImageData(redoStackRef.current[redoStackRef.current.length - 1], 0, 0);
             canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-
             redoStackRef.current.pop();
         } 
         // If the stack is empty
@@ -76,18 +70,10 @@ function Canvas() {
         if(undoStackRef.current.length > 0) {
             // Add the element to the redo array
             canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-            // if(redoStackRef.current.length >= 1) {
-            //     redoStackRef.current.pop();
-            // }
             redoStackRef.current.push(canvasRef.current.savedData);
-            
-
-
             // Restore the last element
             ctxRef.current.putImageData(undoStackRef.current[undoStackRef.current.length - 1], 0, 0);
-            
-            // console.log(imgData)
-            // // Remove the restored action
+            // Remove the restored action
             undoStackRef.current.pop();
         } 
         // If the stack is empty
@@ -117,48 +103,12 @@ function Canvas() {
         // Remember to get the canvas data so previous strokes are kept
         canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-        // Check the undo limit
-        // if(undoStackRef.current.length >= undoStackLimit) {
-        //     // Remove the first element of the stack to keep the current relevent actions
-        //     undoStackRef.current.shift();
-        // }
-        // // Add the latest action of the canvas data onto the stack
-        // undoStackRef.current.push(canvasRef.current.savedData);
-
         // DO NOT DRAW if the fill tool is selected
         if(selectedTool === Tools.TOOL_FILL) {
-            
             Fill(canvasRef, ctxRef, selectedColor);
             canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-            // console.log(savedData)
-            // ctxRef.current.putImageData(imgData, 0, 0);
-
-            // console.log(imgData)
-            
         }
-
         addCanvasData();
-
-        // // Check the undo limit
-        // if(undoStackRef.current.length >= undoStackLimit) {
-        //     // Remove the first element of the stack to keep the current relevent actions
-        //     undoStackRef.current.shift();
-        // }
-        // // Add the latest action of the canvas data onto the stack
-        // undoStackRef.current.push(canvasRef.current.savedData);
-
-        // Add to layer stack
-        // layerStackRef.current[0].push(2);
-        // layerStackRef.current[0].push(6);
-        // layerStackRef.current[1] = [];
-        // layerStackRef.current[1].push(1);
-        // layerStackRef.current[1].push(2);
-        // // layerStackRef[0][0] = "ooop"
-        // console.log(layerStackRef.current)
-        // console.log(layerStackRef.current[0])
-
-        // layerStackRef.current[0].push({"id": 4, "name": "more"});
-    
     };
     // on Mouse Move
     const mouseMove = ({nativeEvent}) => {
@@ -229,10 +179,10 @@ function Canvas() {
                     canvasRef.current.currPos.y - canvasRef.current.startPos.y);
                 break;
             case Tools.TOOL_CIRCLE:
-                roughRef.circle(100, 100, 80, { fill: 'red' });
-                // ctxRef.current.arc(canvasRef.current.startPos.x, canvasRef.current.startPos.y,
-                //     Math.abs(canvasRef.current.currPos.x - canvasRef.current.startPos.x), 
-                //     0, Math.PI * 2);
+                // roughRef.circle(100, 100, 80, { fill: 'red' });
+                ctxRef.current.arc(canvasRef.current.startPos.x, canvasRef.current.startPos.y,
+                    Math.abs(canvasRef.current.currPos.x - canvasRef.current.startPos.x), 
+                    0, Math.PI * 2);
                 break;
             default:
                 break;
