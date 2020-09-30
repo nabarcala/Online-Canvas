@@ -127,11 +127,14 @@ function Canvas() {
 
         // DO NOT DRAW if the fill tool is selected
         if(selectedTool === Tools.TOOL_FILL) {
-            const imgData = Fill(canvasRef, ctxRef, selectedColor);
+            
+            Fill(canvasRef, ctxRef, selectedColor);
+            canvasRef.current.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
             // console.log(savedData)
-            ctxRef.current.putImageData(imgData, 0, 0);
+            // ctxRef.current.putImageData(imgData, 0, 0);
 
-            console.log(imgData)
+            // console.log(imgData)
+            
         }
 
         addCanvasData();
