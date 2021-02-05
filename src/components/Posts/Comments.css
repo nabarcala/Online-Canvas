@@ -1,4 +1,10 @@
-@import url("../../_variables.css");
+@import url("../../assests/Styles/_variables.css");
+
+
+
+/********* Comments *********/
+
+
 
 .comment__form {
     width: 98%;
