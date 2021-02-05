@@ -63,3 +63,6 @@ a:visited {
     margin: 0 var(--nav-padding);
     color: var(--color-white);
 }
+.item .Link {
+    color: var(--color-white);
+}

@@ -2,15 +2,12 @@
 @import url("../../_variables.css");
 
 
+
+/* ////////// Drop down ////////// */
+
 .feed-link {
     color: var(--color-white);
 }
-
-
-
-
-
-
 .image-name {
     /* background-color: var(--color-white); */
     color: var(--color-hover);
@@ -29,4 +26,25 @@
     border: none;
     border-radius: var(--button-radius);
     padding: var(--nav-padding);
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    background-color: #f1f1f1;
+    min-width: 185px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.drop-link .Link {
+    color: black !important;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.drop-link .Link:hover {
+    background-color: #ddd;
+}
+.menu-dropdown:hover .dropdown-content {
+    display: block;
 }

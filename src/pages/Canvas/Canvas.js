@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 import './Canvas.css';
 import '../../components/Toolbar/Toolbar.css';
 import Point, { getMouseCoord } from './utility';
@@ -19,7 +19,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import DropdownMenu from '../Auth/DropdownMenu';
 import ProgressBar from '../../components/Upload/ProgressBar';
 import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+
 
 
 function Canvas() {
@@ -407,14 +407,13 @@ function Canvas() {
             {/* right side account menu */}
             <div className="toolbar-feed-link">
                 <div className="feed-link">
-                    <a href='/home'> Home </a> 
+                    <Link to='home'>Home</Link> 
                 </div>
                 { currentUser ? (
                     <DropdownMenu />
                 ): (
                     <div className="feed-link">
-                        <Link to='Login'>Login</Link>
-                        {/* <a href='login'> Login </a>  */}
+                        <Link to='login'>Login</Link>
                     </div>
                 ) }
             </div>

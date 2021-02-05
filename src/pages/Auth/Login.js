@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Input } from '@material-ui/core';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -68,10 +68,10 @@ export default function LogIn() {
                     />
                     <Input
                         placeholder="password"
-                        reuired
                         type="password"
                         ref={passwordRef}
                         onChange={e => passwordRef.current.value = e.target.value}
+                        reuired
                     />
                     <center>
                        <Button disabled={loading} type="submit">Log In</Button>  
@@ -80,7 +80,7 @@ export default function LogIn() {
                 </form> 
 
                 <div className="signup__login"> 
-                <p>Don't have an account? <a href="/signup">Sign Up</a> </p>
+                    <p>Don't have an account? <Link className='Link' to='signup'>Sign Up</Link> </p>
                 </div>
 
             </div>

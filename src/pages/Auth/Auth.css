@@ -36,10 +36,10 @@
     text-align: center;
     margin-bottom: 20px;
 }
-.signup__login p a {
-    /* color: var(--color-black); */
+.signup__login p .Link {
+    color: var(--color-black);
     text-decoration: none; 
 }
-.signup__login p a:hover {
+.signup__login p .Link:hover { 
     color: var(--color-blue); 
 }

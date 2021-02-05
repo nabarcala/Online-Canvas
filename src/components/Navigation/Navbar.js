@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css'; 
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,13 +17,13 @@ export default function Nav() {
             </div>
             <div className="nav-menu">
                 <div className="item">
-                    <a href="#/">About</a>
+                    <Link className='Link' to='About'>About</Link>
                 </div>
                 <div className="item">
-                    <a href="/home">Home</a>
+                    <Link className='Link' to='Home'>Home</Link>
                 </div>
                 <div className="item">
-                    <a href="/canvas">Canvas</a>
+                    <Link className='Link' to='Canvas'>Canvas</Link>
                 </div>
 
                 { currentUser ? (
@@ -36,7 +37,7 @@ export default function Nav() {
                     </>
                 ): (
                     <div className="feed-link">
-                        <a href='/login'> Login </a> 
+                        <Link className='Link' to='Login'>Login</Link>
                     </div>
                 ) }
 
