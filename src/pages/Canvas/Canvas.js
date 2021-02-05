@@ -19,6 +19,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import DropdownMenu from '../Auth/DropdownMenu';
 import ProgressBar from '../../components/Upload/ProgressBar';
 import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 
 function Canvas() {
@@ -412,7 +413,8 @@ function Canvas() {
                     <DropdownMenu />
                 ): (
                     <div className="feed-link">
-                        <a href='/login'> Login </a> 
+                        <Link to='Login'>Login</Link>
+                        {/* <a href='login'> Login </a>  */}
                     </div>
                 ) }
             </div>

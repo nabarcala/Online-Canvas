@@ -42,11 +42,11 @@ export default function LogIn() {
         <div className="auth-container">
             <div className="auth">
                 <center className="auth__center-title">
-                    <img 
+                    {/* <img 
                         src={require('../../images/painting-palette-icon.png')} 
                         alt="" 
                         className="navbar__headerImage"
-                    /> 
+                    />  */}
                     <h2>Log In</h2>
                 </center>
 
