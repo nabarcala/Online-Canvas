@@ -1,25 +1,32 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import './App.css';
-import Canvas from './components/Canvas';
-import Welcome from './components/Welcome';
+import { AuthProvider } from './contexts/AuthContext';
+import Canvas from './pages/Canvas/Canvas';
+// import Home from './pages/Home/Home';
+import LogIn from './pages/Auth/Login';
+import Gallery from './pages/Gallery/Gallery';
+// import Welcome from './components/Welcome';
 // import Image from './components/Image';
 
 function App() {
 
   return (
     <div className="App">
-      <Router>
-        {/* <Image /> */}
-        <Welcome />
-        <Canvas />
-        
-        
-        {/* <Switch>
-          <Route path='/' exact component={Home} />
-        </Switch> */}
-      </Router>
+      <AuthProvider>
+        <Router>
+
+          <Switch>
+            <Redirect exact from='/' to='/canvas' />
+            <Route path='/canvas' exact component={Canvas} /> 
+            {/* <Route path='/home' exact component={Home} /> */}
+            <Route path='/login' exact component={LogIn} />
+            <Route path='/gallery' exact component={Gallery} />
+          </Switch>
+
+        </Router>
+      </AuthProvider>
     </div>
   );
 }

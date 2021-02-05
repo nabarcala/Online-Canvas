@@ -1,0 +1,42 @@
+
+@import url("../../_variables.css");
+
+
+/* ////////// Banner Home ////////// */
+
+.banner-container {
+    height: 500px;
+    
+}
+.banner-container img {
+    height: 100%;
+    max-width: 100%;
+    /* background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; */
+}
+.banner-title {
+    width: 100%;
+    position: absolute;
+    top: 150px;
+    text-align: center;
+    color: var(--color-white);
+}
+.title {
+    font-size: var(--font-xl);
+}
+.subtitle {
+    font-size: var(--font-large);
+    color: var(--color-border-bottom);
+}
+.banner-buttons {
+    font-size: var(--font-med);
+    padding-top: 45px;
+}
+.banner-buttons a {
+    background-color: var(--color-blue);
+    margin: var(--button-margin);
+    padding: var(--button-padding-more);
+    height: var(--button-height);
+    border-radius: var(--button-radius);
+}

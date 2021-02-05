@@ -1,0 +1,32 @@
+
+@import url("../../_variables.css");
+
+
+.feed-link {
+    color: var(--color-white);
+}
+
+
+
+
+
+
+.image-name {
+    /* background-color: var(--color-white); */
+    color: var(--color-hover);
+    width: 100%;
+    border: 1px solid violet;
+    border-radius: var(--border-radius);
+    padding: var(--button-padding);
+    font-size: var(--font-small);
+}
+.image-name input {
+    border: none;
+    background-color: var(--color-white);
+    color: var(--color-hover);
+    width: 300px;
+    height: var(--button-height);
+    border: none;
+    border-radius: var(--button-radius);
+    padding: var(--nav-padding);
+}

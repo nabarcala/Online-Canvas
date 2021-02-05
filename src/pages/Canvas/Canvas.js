@@ -1,17 +1,33 @@
 import React, { useRef, useState, useEffect } from 'react';
 
 import './Canvas.css';
-import './Toolbar.css';
+import '../../components/Toolbar/Toolbar.css';
 import Point, { getMouseCoord } from './utility';
-import Tools from './Tools';
-import Fill from './Fill';
+import Tools from '../../components/Toolbar/Tools';
+// import Fill from './Fill';
+import Fill from '../../components/Toolbar/Fill';
+// import { useStyles } from '../../components/assests/Styles/Styles';
 
+// import Avatar from '@material-ui/core/Avatar';
 import { SketchPicker } from 'react-color';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
 // import rough from 'roughjs/bundled/rough.esm';
+// import firebase from 'firebase';
+import { useAuth } from '../../contexts/AuthContext';
+// import { auth, storage, db } from '../../firebase';
+import DropdownMenu from '../Auth/DropdownMenu';
+import ProgressBar from '../../components/Upload/ProgressBar';
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+
 
 function Canvas() {
+    // Get the current user
+    const { currentUser } = useAuth();
+    // const classes = useStyles();
+
+    // const [file, setFile] = useState(null);
+    // const [error, setError] = useState(null);
 
     const canvasRef = useRef(null);
     // const roughRef = useRef(null);
@@ -21,11 +37,26 @@ function Canvas() {
 
     const [selectedTool, setSelectedTool] = useState(Tools.TOOL_BRUSH);
     const [selectedColor, setSelectedColor] = useState('#000000');
-    const [selectedSize, setSelectedSize] = useState("5");
+    const [selectedSize, setSelectedSize] = useState("1");
 
     const redoStackRef = useRef([]);
     const undoStackRef = useRef([]);
     const undoStackLimit = 10; 
+
+    // const [image, setImage] = useState(null);
+    // const [progress, setProgress] = useState(0);
+    // const [openUploadImage, setOpenUploadImage] = useState(false);
+    // const [imageName, setImageName] = useState('');
+
+    const [file, setFile] = useState(null);
+    const [error, setError] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [src, setSrc] = useState(null);
+    const [metadata, setMetadata] = useState(null);
+    const [uploading, setUploading] = useState(null);
+    
+    const [title, setTitle] = useState('');
+    const [caption, setCaption] = useState('');
 
     // const [currentLayer, setCurrentLayer] = useState(0);
     // const layerStackRef = useRef([[]]);
@@ -45,11 +76,55 @@ function Canvas() {
         ctxRef.current = ctx;
         // Canvas saved data. Ensures that the canvas is up to date and all previous strokes are remembered
         canvas.savedData = ctxRef.current.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
-    }, []);
+    }, []); 
 
+    const uploadHandler = (e) => {
+
+        console.log('in function');
+
+        let dataURI = canvasRef.current.toDataURL();
+
+        canvasRef.current.toBlob(function(blob) {
+            let image = new Image();
+            image.src = blob;
+            let metadata = {
+                contentType: "image/png",
+                // width: image.width,
+                // height: image.height
+            };
+            uploadImage(blob, dataURI, metadata);
+        });
+    }
+    const uploadImage = (img, dataURI, metadata) => {
+        // save the image only if we get a file
+        if(img) {
+            setOpen(true);
+            setFile(img);
+            setSrc(dataURI)
+            setMetadata(metadata);
+            setError(''); // no error
+        } //reset and set the image error
+        else { 
+            setOpen(false);
+            setFile(null);
+            setSrc(null);
+            setMetadata(null);
+            setError('Please select an image file (png, gif, or jpeg.');
+            console.log(error);
+        }
+    }
+    // const handleOpen = () => {
+    //     setOpen(true);
+    // };
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleSaveButton = () => {
+        setUploading(true);
+    }
     const redo = () => {
-        console.log("redo time!")
-        console.log(redoStackRef.current)
+        console.log("redo time!");
+        console.log(redoStackRef.current);
 
         if(redoStackRef.current.length > 0) {
             console.log(redoStackRef.current[redoStackRef.current.length - 1])
@@ -194,18 +269,6 @@ function Canvas() {
         addCanvasData();
         ctxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     };
-    // const erase = (x, y) => {
-    //     ctxRef.current.lineWidth = brushRef.current.size;
-    //     ctxRef.current.lineCap = brushRef.current.cap;
-    //     ctxRef.current.strokeStyle = "rgba(0,0,0,1.0)";
-    //     ctxRef.current.globalCompositeOperation = "destination-out";
-
-    //     ctxRef.current.lineTo(x, y);
-    //     ctxRef.current.stroke();
-    //     ctxRef.current.beginPath();
-    //     ctxRef.current.moveTo(x, y);
-        
-    // };
     // on Mouse Up - Done drawing
     const finishedPosition = () => {
         setIsDrawing(false);
@@ -221,7 +284,7 @@ function Canvas() {
     const updateSize = (e) => {
         setSelectedSize(e.target.value);
     };
-    const saveImage = () => {
+    const downloadImage = () => {
         // IE/Edge Support (PNG Only)
         if(window.navigator.msSaveBlob) {
             window.navigator.msSaveBlob(canvasRef.current.msToBlob(), 'canvas-image.png');
@@ -236,6 +299,29 @@ function Canvas() {
             document.body.removeChild(a);
         }
     };
+    // const saveImage = () => {
+        
+    //     canvasRef.current.toBlob(function(blob) {
+    //         let image = new Image();
+    //         image.src = blob;
+    //         let metadata = {
+    //             contentType: "image/png",
+    //             // width: image.width,
+    //             // height: image.height
+    //         };
+
+    //         let name = prompt("Title your artwork", "Untitled");
+
+    //         storage
+    //             .ref('gallery/')
+    //             .child(`${currentUser.displayName}/${name}`)
+    //             .put(blob, metadata)
+    //             // Then post image to db
+    //             .then(function(snapshot) {
+    //                 console.log("Uploaded", snapshot.totalBytes, "bytes.");
+    //             });
+             
+    // })};
     const openImage = (input) => {
         var reader = new FileReader();
 
@@ -260,6 +346,7 @@ function Canvas() {
         newActive.classList.add('selected');
         // The new selected tool is chosen when the input is changed
     };
+    
 
   return (
     <div>
@@ -273,13 +360,27 @@ function Canvas() {
                 hidden 
             />
             <label htmlFor="open" id="open-file"><i className='bx bx-folder-open'></i>Open </label> 
-            {/* Save Image */}
+            {/* Download Image */}
             <button 
-                id="save"
-                onClick={saveImage}
+                id="download"
+                onClick={downloadImage}
                 hidden
             />
-            <label htmlFor="save" id="save-label"><i className='bx bx-save'></i>Save </label> 
+            <label htmlFor="download" id="download-label"><i className='bx bxs-download' ></i>Download </label> 
+            {/* Save Image */}
+            { currentUser && (
+                <>
+                    {/* <input id="post" type="file" onChange={uploadHandler} accept="image/x-png,image/gif,image/jpeg" /> 
+                    <label htmlFor="post" id="post-label" > <i className='bx bx-cloud-upload'></i>Save </label>   */}
+                   
+                    <button 
+                        id="save"
+                        onClick={uploadHandler}
+                        hidden
+                    />
+                    <label htmlFor="save" id="save-label"><i className='bx bx-cloud-upload'></i>Save </label> 
+                </>
+            )}
             {/* Clear Canvas */}
             <input 
                 type="radio" 
@@ -302,11 +403,55 @@ function Canvas() {
             />
             <label htmlFor="redo" id="save-label"><i className='bx bx-redo' ></i>Redo </label> 
 
-            {/* <Button className='btns disabled' data-command="undo"><i className='bx bx-undo' ></i>Undo </Button> */}
-            {/* <Button className='btns disabled' data-command="redo"><i className='bx bx-redo' ></i>Redo </Button> */}
-            
-            
-        </div>
+            {/* right side account menu */}
+            <div className="toolbar-feed-link">
+                <div className="feed-link">
+                    <a href='/home'> Home </a> 
+                </div>
+                { currentUser ? (
+                    <DropdownMenu />
+                ): (
+                    <div className="feed-link">
+                        <a href='/login'> Login </a> 
+                    </div>
+                ) }
+            </div>
+        </div> {/* Toolbar top End */}
+
+        <Dialog 
+            open={open} 
+            onClose={handleClose} 
+            aria-labelledby="form-dialog-title"
+        >
+            <DialogTitle> Save Your Drawing 2  </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    <p>Save your drawing to your personal gallery to continue it later,
+                        or post it online to share it with others.
+                    </p>
+                </DialogContentText>
+                <div className="image-preview">
+                    {/* image preview */}
+                    { file && <img src={src} alt="preview" width="200px" /> }
+                </div>
+                <div className="image-details">
+                    <div className="detail-input">
+                        <label htmlFor="title">Title</label>
+                        <input id="caption" type="text" placeholder="Title" onChange={e => setTitle(e.target.value)}/>
+                    </div>
+                    <div className="detail-input">
+                        <label htmlFor="caption">Caption</label>
+                        {/* <input id="caption" type="text" placeholder="Caption" onChange={(e) => setCaption(e)}/> */}
+                        <textarea id="caption" type="text" rows="5" placeholder="Caption" onChange={e => setCaption(e.target.value)} />
+                    </div>
+                    { uploading && <ProgressBar file={file} setUploading={setUploading} metadata={metadata} title={title} caption={caption} setOpen={setOpen} /> }
+                    <div className="preview-button">
+                        <li className="upload-button" onClick={handleSaveButton}>Save Your Image</li>  
+                    </div>
+                </div>
+                
+            </DialogContent>
+        </Dialog>
 
         <div className="toolbar-left">
             {/* Eraser */}
@@ -393,8 +538,7 @@ function Canvas() {
                 />
                 <div>{ selectedSize }</div>
             </div>
-
-        </div>
+        </div> {/* Toolbar left End */}
 
         <div className="container-canvas">
             <canvas id="canvas"
@@ -403,9 +547,6 @@ function Canvas() {
                     onMouseMove={mouseMove}
                     ref={canvasRef}
                     > 
-                {/* <div id="img-data-div"> */}
-                    {/* <a id="img-file" download="image.png">download image</a> */}
-                {/* </div> */}
             </canvas>
         </div>
 

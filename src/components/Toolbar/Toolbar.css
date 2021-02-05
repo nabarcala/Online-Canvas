@@ -1,4 +1,4 @@
-@import url("../_variables.css");
+@import url("../../_variables.css");
 
 .disabled {
     display: none;
@@ -7,6 +7,9 @@
     width: 100%;
     border-bottom: 1px solid var(--color-hover); 
     margin: 1rem 0;
+}
+a, a:visited {
+    text-decoration: none;
 }
 
 /* ////////// Top Navbar ////////// */
@@ -26,8 +29,8 @@
 }
 .toolbar-top label {
     /* max-width: 45px; */
-    font-weight: 300;
-    font-size: 15px;
+    font-weight: var(--font-normal);
+    font-size: var(--font-med);
     filter: invert();
     padding: 10px 10px 10px 10px; 
     cursor: pointer;
@@ -40,13 +43,63 @@
     background: var(--color-hover);
 }
 .toolbar-top label i {
-    font-size: 20px;
+    font-size: var(--font-icon);
     padding-right: 0.3rem;
 }
 .toolbar-left .selected { 
     filter: none;
     color: var(--color-white);
     background-color: var(--color-hover);
+}
+.toolbar-feed-link {
+    position: absolute; 
+    height: var(--button-height);
+    text-align: center;
+    right: 10px;
+    display: flex;
+    flex-direction: row;
+    color: var(--color-black) !important;  
+    /* background-color: var(--color-white); */
+    border-radius: var(--button-radius);
+    cursor: pointer;
+    font-size: var(--font-med);
+    font-weight: var(--font-normal);
+    padding: var(--button-padding);
+}
+/* .toolbar-feed-link:hover .feed-link {
+    background-color: var(--color-blue);
+} */
+.feed-link:hover a {
+    color: var(--color-blue); 
+}
+.feed-link {
+    margin-top: 3px;
+    padding: 0 var(--nav-padding); 
+}
+
+
+
+/* ////////// Drop down ////////// */
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 185px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.drop-link a {
+    color: black !important;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.drop-link a:hover {
+    background-color: #ddd;
+}
+.menu-dropdown:hover .dropdown-content {
+    display: block;
 }
 
 
@@ -75,7 +128,7 @@
 .toolbar-left label {
     max-width: 45px;
     font-weight: 300;
-    font-size: 15px;
+    font-size: var(--font-med);
     filter: invert();
     padding: 10px 10px 10px 10px; 
     cursor: pointer;
@@ -89,7 +142,7 @@
     border-top: 1px solid rgb(61, 61, 66);
 }
 .toolbar-left label i {
-    font-size: 20px;
+    font-size: var(--font-icon);
     padding-right: 0.3rem;
 }
 /* .toolbar-left .selected {
@@ -116,7 +169,7 @@
     margin: 5px;
     /* margin-bottom: 5px; */
     background-color: #fff;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     cursor: pointer;
 }
 .tool-size {

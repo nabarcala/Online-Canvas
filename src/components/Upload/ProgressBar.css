@@ -1,0 +1,10 @@
+@import url("../../_variables.css");
+
+/* ////////// Progress Bar for Uploads ////////// */
+
+.progress-bar {
+    height: 5px;
+    background-color: var(--color-blue);
+    margin-top: 10px;
+    border-radius: var(--border-radius);
+}
