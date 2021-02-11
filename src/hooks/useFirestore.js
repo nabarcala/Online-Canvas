@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { storage, db, timestamp } from '../firebase';
+import { db } from '../firebase';
 
 const useFirestore = (collection, username) => {
     // get data from the collection given
@@ -25,7 +25,7 @@ const useFirestore = (collection, username) => {
             // unsubscribe from this collection when we are no longer using it
             return() => unsubscribe();
 
-    }, [collection])
+    }, [collection, username])
 
     return { docs }
 }

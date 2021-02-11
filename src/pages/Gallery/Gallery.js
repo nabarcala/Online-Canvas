@@ -66,8 +66,8 @@ const Gallery = () => {
                 {/* Check there are images in the gallery database then */}
                 {/* loop through all the images and display them */}
                 { docs && docs.map(doc => (
-                    <div className="wrapper">
-                        <div className="img-wrap" key={doc.id}>
+                    <div className="wrapper" key={doc.id}>
+                        <div className="img-wrap">
                             <img src={doc.url} alt={doc.title} />
                         </div>
                         <div className="img-name">{doc.title}</div>
