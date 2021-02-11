@@ -15,6 +15,9 @@ a:visited {
     text-decoration: none;
     color: var(--color-white);
 }
+.no-margin {
+    margin: 0 !important;
+}
 
 /* ////////// Navbar ////////// */
 
@@ -61,7 +64,9 @@ a:visited {
 }
 .item {
     margin: 0 var(--nav-padding);
-    color: var(--color-white);
+    /* margin-right: 70px; */
+    /* padding: 10px; */
+    color: var(--color-white); 
 }
 .item .Link {
     color: var(--color-white);

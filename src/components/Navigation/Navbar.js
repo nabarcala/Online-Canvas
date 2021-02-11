@@ -2,7 +2,8 @@ import './Navbar.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { auth } from '../../firebase';
+// import { auth } from '../../firebase';
+import DropdownMenu from './DropdownMenu';
 
 export default function Nav() {
     const { currentUser } = useAuth();
@@ -15,24 +16,28 @@ export default function Nav() {
                 </div>
             </div>
             <div className="nav-menu">
-                <div className="item">
+                {/* <div className="item">
                     <Link className='Link' to='About'>About</Link>
                 </div>
                 <div className="item">
                     <Link className='Link' to='Home'>Home</Link>
-                </div>
+                </div> */}
                 <div className="item">
                     <Link className='Link' to='Canvas'>Canvas</Link>
                 </div>
 
                 { currentUser ? (
                     <>
-                    <div className="item">
+                    <div className="item no-margin">
+                        <DropdownMenu />
+                    </div>
+
+                    {/* <div className="item">
                         <a href="#/">Username</a>
                     </div>
                     <div className="item">
                         <span onClick={() => auth.signOut()}> logout </span> 
-                    </div>
+                    </div> */}
                     </>
                 ): (
                     <div className="feed-link">

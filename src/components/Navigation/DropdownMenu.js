@@ -31,7 +31,7 @@ export default function DropdownMenu() {
                     </div>
                     {/* divider here */}
                     <div className="drop-link">
-                        <Link className='Link' onClick={() => auth.signOut()}> logout </Link> 
+                        <li className='Link' onClick={() => auth.signOut()}> logout </li>
                     </div>
 
                 </div>

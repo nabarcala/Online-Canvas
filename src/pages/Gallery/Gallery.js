@@ -1,17 +1,18 @@
 // import React, { useState, useEffect } from 'react';
+import './Gallery.css';
 import React from 'react';
 import Nav from '../../components/Navigation/Navbar';
-import './Gallery.css';
-// import { useAuth } from '../../contexts/AuthContext';
+import useFirestore from '../../hooks/useFirestore';
+import { useAuth } from '../../contexts/AuthContext';
 // import { storage } from '../../firebase';
 // import Posts from '../../components/Posts/Post';
 
-export default function Gallery() {
-    // const { currentUser } = useAuth();
+const Gallery = () => {
+    const { currentUser } = useAuth();
     // const [gallery, setGallery] = useState([]);
 
     // useEffect(() => {
-        // let i = 0;
+        // let i = 0; 
 
         // storage
         //     .ref('gallery/')
@@ -39,6 +40,18 @@ export default function Gallery() {
     // )
     // }, []) // run every single time a gallery item changes
 
+
+    // Get the images from the gallery database
+    const { docs } = useFirestore('gallery', currentUser.displayName);
+    console.log(docs); 
+
+    // if(docs.length === 0) {
+    //     console.log("no images in gallery");
+    //     alert("None");
+    // }
+
+
+
     return (
         <div className='container'>
             <Nav />
@@ -49,24 +62,30 @@ export default function Gallery() {
                     <a href="#/">Import Image</a>
                 </div>
             </div>
+            <div className="gallery-container">
+                {/* Check there are images in the gallery database then */}
+                {/* loop through all the images and display them */}
+                { docs && docs.map(doc => (
+                    <div className="wrapper">
+                        <div className="img-wrap" key={doc.id}>
+                            <img src={doc.url} alt={doc.title} />
+                        </div>
+                        <div className="img-name">{doc.title}</div>
+                    </div>
+                )) }
+            </div>
+
+
+
             {/* <div className="gallery"> */}
 
-            <div className="feed-container">
+            {/* <div className="feed-container">
 
                 <div className="gallery-container">
-                    {/* { gallery.map(({id, name, img}) => (
-                        <Posts 
-                            key={id}
-                            postId={id}
-                            user={currentUser}
-                            username={currentUser.displayName}
-                            // caption={post.caption}
-                            imageUrl={img.src}
-                        />
-                    ))} */}
+                     
 
                 </div>
-            </div>
+            </div> */}
                 
                 {/* { gallery.map(({id, name, img}) => (
                     <div className="gallery-item">
@@ -86,3 +105,5 @@ export default function Gallery() {
         </div>
     )
 }
+
+export default Gallery;

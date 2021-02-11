@@ -1,7 +1,7 @@
 @import url("../../assests/Styles/_variables.css");
 
 .disabled {
-    display: none;
+    display: none; 
 }
 .divider {
     width: 100%;

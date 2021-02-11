@@ -1,25 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Canvas.css';
-import '../../components/Toolbar/Toolbar.css';
-import Point, { getMouseCoord } from './utility';
-import Tools from '../../components/Toolbar/Tools';
-// import Fill from './Fill';
-import Fill from '../../components/Toolbar/Fill';
-// import { useStyles } from '../../components/assests/Styles/Styles';
-
-// import Avatar from '@material-ui/core/Avatar';
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
-// import rough from 'roughjs/bundled/rough.esm';
-// import firebase from 'firebase';
-import { useAuth } from '../../contexts/AuthContext';
-// import { auth, storage, db } from '../../firebase';
-import DropdownMenu from '../Auth/DropdownMenu';
-import ProgressBar from '../../components/Upload/ProgressBar';
-import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
+import { useAuth } from '../../contexts/AuthContext';
+import DropdownMenu from '../../components/Navigation/DropdownMenu';
+import ProgressBar from '../../components/Upload/ProgressBar';
+
+import Point, { getMouseCoord } from './utility';
+import Tools from '../../components/Toolbar/Tools';
+import Fill from '../../components/Toolbar/Fill';
+import './Canvas.css';
+import '../../components/Toolbar/Toolbar.css';
 
 
 function Canvas() {
@@ -53,6 +47,7 @@ function Canvas() {
     const [error, setError] = useState(null);
     const [open, setOpen] = useState(false);
     const [src, setSrc] = useState(null);
+    const [size, setSize] = useState(null);
     const [metadata, setMetadata] = useState(null);
     const [uploading, setUploading] = useState(null);
     
@@ -89,20 +84,20 @@ function Canvas() {
             let image = new Image();
             image.src = blob;
             let metadata = {
-                contentType: "image/png",
-                // width: image.width,
-                // height: image.height
+                contentType: "image/png"
             };
-            uploadImage(blob, dataURI, metadata);
+            let imageSize = [canvasRef.current.width, canvasRef.current.height];
+            uploadImage(blob, dataURI, metadata, imageSize);
         });
     }
-    const uploadImage = (img, dataURI, metadata) => {
+    const uploadImage = (img, dataURI, metadata, imageSize) => {
         // save the image only if we get a file
         if(img) {
             setOpen(true);
             setFile(img);
             setSrc(dataURI)
             setMetadata(metadata);
+            setSize(imageSize);
             setError(''); // no error
         } //reset and set the image error
         else { 
@@ -110,6 +105,7 @@ function Canvas() {
             setFile(null);
             setSrc(null);
             setMetadata(null);
+            setSize(null);
             setError('Please select an image file (png, gif, or jpeg.');
             console.log(error);
         }
@@ -300,29 +296,6 @@ function Canvas() {
             document.body.removeChild(a);
         }
     };
-    // const saveImage = () => {
-        
-    //     canvasRef.current.toBlob(function(blob) {
-    //         let image = new Image();
-    //         image.src = blob;
-    //         let metadata = {
-    //             contentType: "image/png",
-    //             // width: image.width,
-    //             // height: image.height
-    //         };
-
-    //         let name = prompt("Title your artwork", "Untitled");
-
-    //         storage
-    //             .ref('gallery/')
-    //             .child(`${currentUser.displayName}/${name}`)
-    //             .put(blob, metadata)
-    //             // Then post image to db
-    //             .then(function(snapshot) {
-    //                 console.log("Uploaded", snapshot.totalBytes, "bytes.");
-    //             });
-             
-    // })};
     const openImage = (input) => {
         var reader = new FileReader();
 
@@ -406,9 +379,9 @@ function Canvas() {
 
             {/* right side account menu */}
             <div className="toolbar-feed-link">
-                <div className="feed-link">
+                {/* <div className="feed-link">
                     <Link to='home'>Home</Link> 
-                </div>
+                </div> */}
                 { currentUser ? (
                     <DropdownMenu />
                 ): (
@@ -445,11 +418,11 @@ function Canvas() {
                         {/* <input id="caption" type="text" placeholder="Caption" onChange={(e) => setCaption(e)}/> */}
                         <textarea id="caption" type="text" rows="5" placeholder="Caption" onChange={e => setCaption(e.target.value)} />
                     </div>
-                    { uploading && <ProgressBar file={file} setUploading={setUploading} metadata={metadata} title={title} caption={caption} setOpen={setOpen} /> }
+                    { uploading && <ProgressBar file={file} setUploading={setUploading} metadata={metadata} title={title} caption={caption} size={size} setOpen={setOpen} user={currentUser.displayName} /> }
                     <div className="preview-button">
                         <li className="upload-button" onClick={handleSaveButton}>Save Your Image</li>  
                     </div>
-                </div>
+                </div> 
                 
             </DialogContent>
         </Dialog>
